@@ -1,8 +1,8 @@
 package com.doori.hackerthon.controller;
 
 import com.doori.hackerthon.dto.Chat;
+import com.doori.hackerthon.dto.ChatResponse;
 import com.doori.hackerthon.service.GptService;
-import io.github.flashvayne.chatgpt.dto.ChatRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,6 @@ import org.python.util.PythonInterpreter;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -81,15 +80,14 @@ public class ChatController {
     // 채팅방 조회
     @PostMapping("/message")
     @ResponseBody
-    public String chatMessage(@RequestBody Chat chat) {
+    public ChatResponse chatMessage(@RequestBody Chat chat) {
         return gptService.getChatResponse(chat);
     }
-//
-//    @PostMapping("/chatbot")
-//    @ResponseBody
-//    public Message callChatBot(@RequestBody Map<String, String> map) {
-//        // System.out.println(map.get("title")); - 챗봇 버튼
-//        Message message = new Message("챗봇의 응답");
-//        return message;
-//    }
+
+    @PostMapping("/chatbot")
+    @ResponseBody
+    public ChatResponse callChatBot(@RequestBody Chat chat) {
+
+        return gptService.getChatDocument(chat);
+    }
 }

@@ -38,7 +38,7 @@ pinecone:
   api:
     key: 31271348-bece-4289-9869-6dba253257d7
 chatgpt:
-  api-key: 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
+  api-key: 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
   # some properties as below have default values. For descriptions of these fields, please refer to https://platform.openai.com/docs/api-reference/completions/create and https://platform.openai.com/docs/api-reference/chat/create
   url: https://api.openai.com/v1/completions
   model: text-davinci-003
