@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<script>
+var novibroj = 0;
+var memorija = 0;
+function dodajBroj(operator, noviznak) {
+if (operator == 1) novibroj = 1;
+if (document.racunalo.display.value == null) novibroj = 0;
+else if (document.racunalo.display.value == "0") novibroj = 0;
+if (novibroj == 0) document.racunalo.display.value = noviznak;
+else document.racunalo.display.value += noviznak;
+novibroj = 1;
+}
+
+function izracunaj(zarez, decimala, unos) {
+with (Math) {
+novibroj = 0;
+if (zarez >= 1) {
+broj = unos.value;
+}
+var rezultat = eval(broj);
+if (document.racunalo.stupnjevi[1].checked)
+radijani = (rezultat / 180) * PI;
+else radijani = rezultat;
+if (zarez == 2) rezultat = pow(rezultat, 2);
+else if (zarez == 3) rezultat = sqrt(rezultat);
+else if (zarez == 4) rezultat = -rezultat;
+else if (zarez == 5) rezultat = log(rezultat);
+else if (zarez == 6) rezultat = pow(E, rezultat);
+else if (zarez == 7) rezultat = 1 / rezultat;
+else if (zarez == 8) rezultat = log(rezultat) / LN10;
+else if (zarez == 9) rezultat = pow(10, rezultat);
+else if (zarez == 10) memorija = rezultat;
+else if (zarez == 11) memorija += rezultat;
+else if (zarez == 12) memorija -= rezultat;
+else if (zarez == 14) rezultat = tan(radijani);
+else if (zarez == 15) rezultat = cos(radijani);
+else if (zarez == 16) rezultat = sin(radijani);
+else if (zarez == 17) rezultat = rezultat / 100;
+else if (zarez == 18) rezultat = rezultat / 1000000;
+else if (zarez == 20) rezultat = factorial(rezultat);
+else if (zarez == 21) {
+var eksponent = prompt(
+"Unesite eksponent / Please enter exponent",
+3
+);
+rezultat = pow(rezultat, eksponent);
+} else if (zarez == 22) {
+var eksponent = prompt("Unesite korijen / Please enter root", 3);
+rezultat = pow(rezultat, 1 / eksponent);
+}
+if (decimala == -1) unos.value = rezultat;
+else
+unos.value =
+round(rezultat * pow(10, decimala)) / pow(10, decimala);
+if (zarez >= 2) broj = rezultat;
+zarez = 1;
+}
+}
+function factorial(n) {
+if (n == 0 || n == 1) return 1;
+else {
+rezultat = n * factorial(n - 1);
+return rezultat;
+}
+}
+</script>
+
+<style>
+      a:link {
+        color: #009999;
+        text-decoration: none;
+      }
+      a:visited {
+        color: #0066cc;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #0099ff;
+        text-decoration: none;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: Arial;
+      }
+      td,
+      th {
+        font-family: Arial;
+      }
+      li,
+      ul {
+        font-family: Arial;
+      }
+      dd,
+      dt,
+      dl {
+        font-family: Arial;
+      }
+      p {
+        font-family: Arial;
+      }
+      BODY {
+        font-family: Arial;
+      }
+
+
+</style>
+</head>
+
+<body
+        background-color="#f3f3f3"
+        onLoad="document.racunalo.display.focus();"
+        text="#0066cc"
+>
+<!-- <center>  -->
+<p align="CENTER">
+    <br/>
+
+</p>
+
+<form name="racunalo">
+    <table
+            align="CENTER"
+            background-color="#EFEFEF"
+            border="5"
+            cellpadding="1"
+            cellspacing="0"
+    >
+        <tr>
+            <td>
+                <table
+                        background-color="#EFEFEF"
+                        border="2"
+                        cellpadding="1"
+                        cellspacing="3"
+                >
+                    <tr>
+                        <td align="CENTER" colspan="6">
+                            <FONT SIZE=4><INPUT NAME="display" SIZE="16"
+                                                STYLE="FONT-SIZE: 13pt; FONT-STYLE: normal; FONT-WEIGHT: bold; HEIGHT: 30px; WIDTH: 260px ;background-color:#FFFFCC;"
+                                                TYPE="text"
+                                                VALUE="">
+                            </FONT>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="CENTER" colspan="4" valign="MIDDLE">
+                            <FONT SIZE="2">
+                                <select
+                                        ONCHANGE="if (document.racunalo.display.value != '') {izracunaj(0, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)}"
+                                        name="izaZareza"
+                                        size="1"
+                                        style="background-color: #ffffcc"
+                                >
+                                    <option selected value="-1">decimal</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                </select>
+                                <input checked name="stupnjevi" type="radio"/>Rad
+                                <input name="stupnjevi" type="radio"/>Deg
+                            </FONT>
+                        </td>
+                        <td align="CENTER"></td>
+                        <td>
+                            <input
+                                    ONCLICK="this.form.display.value = ''"
+                                    height="24"
+                                    name="C"
+                                    style="font-size: 10pt; width: 38px; height: 24px"
+                                    type="button"
+                                    value="Cls"
+                                    width="38"
+                            />
+                        </td>
+                    </tr>
+                    <tr colspan="6">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(3, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="sqrt"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="sqrt"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(22, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="root"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="root"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(5, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="ln"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="ln"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(8, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="log"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="log"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(14, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="tan"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="tan"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="memorija=0"
+                                    height="28"
+                                    name="MC"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="MC"
+                                    width="38"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(2, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="x^2"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="x^2"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(21, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="x^y"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="x^y"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(6, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="e^x"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="e^x"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(9, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="10^x"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="10^x"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(15, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="cos"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="cos"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(10, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="M"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="M"
+                                    width="38"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(4, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="-"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="+/-"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(7, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="1/x"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="1/x"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(20, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="x!"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="x!"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(2, Math.PI)"
+                                    height="28"
+                                    name="PI"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="PI"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(16, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="sin"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="sin"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(12, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="28"
+                                    name="M-"
+                                    style="font-size: 10pt; width: 38px; height: 28px"
+                                    type="button"
+                                    value="M-"
+                                    width="38"
+                            />
+                        </td>
+                    </tr>
+                    <tr colspan="6">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 7)"
+                                    height="32"
+                                    name="7"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="7"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 8)"
+                                    height="32"
+                                    name="8"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="8"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 9)"
+                                    height="32"
+                                    name="9"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="9"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(1, '/')"
+                                    height="32"
+                                    name="÷"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="÷"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(18, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="32"
+                                    name="ppm"
+                                    style="font-size: 10pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="ppm"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(11, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="32"
+                                    name="M+"
+                                    style="font-size: 10pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="M+"
+                                    width="38"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 4)"
+                                    height="32"
+                                    name="4"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="4"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 5)"
+                                    height="32"
+                                    name="5"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="5"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 6)"
+                                    height="32"
+                                    name="6"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="6"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(1, '*')"
+                                    height="32"
+                                    name="×"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="×"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="izracunaj(17, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="32"
+                                    name="%"
+                                    style="font-size: 10pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="%"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(2, memorija)"
+                                    height="32"
+                                    name="MR"
+                                    style="font-size: 10pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="MR"
+                                    width="38"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 1)"
+                                    height="32"
+                                    name="1"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="1"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 2)"
+                                    height="32"
+                                    name="2"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="2"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 3)"
+                                    height="32"
+                                    name="3"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="3"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(1, '-')"
+                                    height="32"
+                                    name="－"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="－"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(1, '(')"
+                                    height="32"
+                                    name="("
+                                    style="font-size: 10pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="("
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(1, ')')"
+                                    height="32"
+                                    name=")"
+                                    style="font-size: 10pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value=")"
+                                    width="38"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(0, 0)"
+                                    height="32"
+                                    name="0"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="0"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(1, '.')"
+                                    height="32"
+                                    name="."
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="."
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(1, 'E')"
+                                    height="32"
+                                    name="exp"
+                                    style="font-size: 10pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="exp"
+                                    width="38"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                    ONCLICK="dodajBroj(1, '+')"
+                                    height="32"
+                                    name="＋"
+                                    style="font-size: 12pt; width: 38px; height: 32px"
+                                    type="button"
+                                    value="＋"
+                                    width="38"
+                            />
+                        </td>
+                        <td align="CENTER" colspan="2">
+                            <input
+                                    ONCLICK="izracunaj(1, racunalo.izaZareza.options[racunalo.izaZareza.selectedIndex].value, document.racunalo.display)"
+                                    height="32"
+                                    name="enter"
+                                    style="font-size: 12pt; width: 82px; height: 32px"
+                                    type="button"
+                                    value="="
+                                    width="82"
+                            />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

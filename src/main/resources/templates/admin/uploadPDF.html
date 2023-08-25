@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<form enctype="multipart/form-data" method="post" th:action="@{/api/v1}">
+    <input required th:name="pdfFile" type="file">
+    <button type="submit">Upload</button>
+</form>
+
+</body>
+</html>

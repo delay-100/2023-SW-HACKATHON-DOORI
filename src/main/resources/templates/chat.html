@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <!--    <link-->
+    <!--            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"-->
+    <!--            rel="stylesheet"-->
+    <!--    />-->
+
+    <!-- 부가적인 테마 -->
+    <!--    <link-->
+    <!--            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"-->
+    <!--            rel="stylesheet"-->
+    <!--    />-->
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
+    <!--    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>-->
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        display: flex;
+        height: 100vh;
+      }
+      .first-column {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .second-column {
+        flex: 1.5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: center; */
+      }
+      .divide-line {
+        border-left: 1px solid #ccc;
+        height: 100%;
+        margin: 0 auto;
+      }
+      .third-column {
+        flex: 1.5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: center; */
+      }
+      #msgArea {
+        margin-bottom: 10px;
+      }
+      .input-group {
+        margin: 0;
+      }
+      .message-value {
+        font-weight: bold;
+
+        /* position: relative; */
+      }
+      .gpt-message {
+        color: green;
+      }
+      .user-message {
+        /* position: absolute; */
+        float: right;
+        color: black;
+        right: 0;
+      }
+      .chatbot-message {
+        color: purple;
+      }
+      .msg-input-and-button {
+        /* position: fixed; */
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .scroll-view {
+        overflow-y: scroll;
+        width: 100%;
+        flex: 1;
+      }
+      .exam-div {
+        margin-top: auto;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .exam-button {
+        padding: 40px;
+        width: 100%;
+      }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="first-column">
+        <!-- 과목명 -->
+        <label>과목명이 들어갈 곳이에용</label>
+        <!--챗봇 관련(static) 버튼 리스트-->
+        <div class="button-list">
+            <button
+                    class="btn"
+                    th:each="chatbot : ${chatbotList}"
+                    th:onclick="chatbotButtonOnPress([[${chatbot}]])"
+                    th:text="${chatbot}"
+            ></button>
+        </div>
+        <div class="more-button">
+            <button class="btn" id="load-more-button">공학용 계산기</button>
+        </div>
+        <div class="target-div" style="display: none"></div>
+        <div class="exam-div">
+            <button class="exam-button">시험 보기</button>
+        </div>
+    </div>
+    <div class="divide-line"></div>
+    <div class="second-column">
+        <!--    <label th:text="${subject_name}"></label>-->
+        <embed
+                height="100%"
+                th:src="@{/pdf/example.pdf}"
+                type="application/pdf"
+                width="100%"
+        />
+        <!-- 과목 db 관련 버튼 리스트 -->
+
+        <!-- <tr th:each="subject : ${subjectList}">
+          <td th:text="${subject.id}"></td>
+          <td th:text="${subject.name}"></td>
+        </tr> -->
+
+        <!-- th:onclick="'chatbotButtonOnPress(\'' + ${chatbot} + '\')'" -->
+    </div>
+    <div class="divide-line"></div>
+    <div class="third-column">
+        <div class="chat-label">
+            <label style="font-weight: bold">채팅</label>
+        </div>
+        <div class="scroll-view">
+            <!-- <div class="col-6"></div> -->
+            <div id="msgArea">
+                <div id="loading-spinner" style="display: none">Loading...</div>
+            </div>
+        </div>
+        <div class="msg-input-and-button">
+            <input class="form-control" id="msg" type="text"/>
+            <button
+                    class="btn btn-outline-secondary"
+                    id="button-send"
+                    type="button"
+            >
+                전송
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+      $("#button-send").on("click", function (e) {
+        var msg = document.getElementById("msg");
+        var data = {
+          // roomId: roomId,
+          message: msg.value,
+          // writer: username
+        };
+        str = "<div class='message-value'>";
+        str += "<div class='user-message'>" + msg.value + "</div>";
+        str += "</div>";
+        $("#msgArea").append(str);
+        $("#loading-spinner").show();
+        // AJAX를 사용하여 서버로 POST 요청 전송
+        $.ajax({
+          type: "POST",
+          url: "/chat/message", // 여기에 POST 요청을 처리할 서버 엔드포인트 URL을 입력
+          data: JSON.stringify(data),
+          contentType: "application/json",
+          beforeSend: function () {
+            // Show loading spinner before sending the request
+            $("#loading-spinner").show();
+          },
+          success: function (response) {
+            console.log(response);
+            var message = response.message;
+            var str = "";
+            str = "<div class='message-value'>";
+            str += "<div class='gpt-message'>" + message + "</b>";
+            str += "</div></div>";
+            // }
+            $("#msgArea").append(str);
+          },
+          error: function (error) {
+            // 에러 처리
+            console.error("POST request error:", error);
+          },
+          complete: function () {
+            // Hide loading spinner after the request is completed
+            $("#loading-spinner").hide();
+          },
+        });
+        msg.value = "";
+      });
+      var isHtmlVisible = false; // 초기에는 HTML이 숨겨져 있는 상태
+
+      $("#load-more-button").on("click", function () {
+        // AJAX를 사용하여 다른 HTML 페이지를 로드합니다.
+        $.ajax({
+          url: "/calculator", // 다른 페이지의 경로를 여기에 입력
+          type: "GET",
+          success: function (response) {
+            // 서버에서 받은 HTML 코드를 특정 요소에 추가하여 페이지에 표시합니다.
+            $(".target-div").html(response);
+
+            // HTML 창을 보이거나 숨기는 처리
+            if (isHtmlVisible) {
+              $(".target-div").hide();
+              isHtmlVisible = false;
+            } else {
+              $(".target-div").show();
+              isHtmlVisible = true;
+            }
+          },
+          error: function (error) {
+            console.error("Error loading other page:", error);
+          },
+        });
+      });
+    });
+
+    function chatbotButtonOnPress(chatbotName) {
+      //     console.log(chatbotName);
+      $.ajax({
+        type: "POST",
+        url: "/chat/chatbot",
+        data: JSON.stringify({ title: chatbotName }),
+        contentType: "application/json",
+        success: function (response) {
+          console.log(response.message);
+          var message = response.message;
+          var str = "";
+          str = "<div class='col-6'>";
+          str += "<div class='chatbot-message'>";
+          str += "<b>" + chatbotName + " :" + message + "</b>";
+          str += "</div></div>";
+          // }
+          $("#msgArea").append(str);
+        },
+        error: function (error) {
+          console.error("chatBotRequest request error:", error);
+        },
+      });
+    }
+
+</script>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Title이에여</title>
+</head>
+<body>
+
+<div>
+    <a th:href="@{/admin}">ADMIN 페이지</a>
+</div>
+
+<div class="container">
+    <div>
+        <ul th:each="room : ${list}">
+            <li><a th:href="@{/chat/room(roomId=${room.roomId})}">[[${room.name}]]</a></li>
+        </ul>
+    </div>
+</div>
+<form method="post" th:action="@{/chat/room}">
+    <select name="departmentList">
+        <option th:each="department : ${departmentList}" th:text="${department}"></option>
+    </select>
+    <select name="subjectList">
+        <option th:each="subject : ${subjectList}" th:text="${subject}"></option>
+    </select>
+    <input class="form-control" name="name" placeholder="학번을 입력해주세요." type="text">
+    <button class="btn btn-secondary">개설하기</button>
+</form>
+<!--<div class="drop-area" id="drop-area">-->
+<!--    <p>Drag and drop a PDF file here</p>-->
+<!--    <form action="@{/api/v1}" enctype="multipart/form-data" id="upload-form">-->
+<!--        <input id="pdfFileInput" name="pdfFile" type="file">-->
+<!--        <button type="submit">Upload</button>-->
+<!--    </form>-->
+
+<!--    <div class="file-info" id="file-info" th:if="${pdfFileName}">-->
+<!--        <h2>Uploaded PDF Info</h2>-->
+<!--        <p th:text="'File name: ' + ${pdfFileName}"></p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>
