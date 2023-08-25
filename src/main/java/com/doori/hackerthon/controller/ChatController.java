@@ -26,12 +26,12 @@ import java.util.Map;
 public class ChatController {
 
     private static PythonInterpreter interpreter;
-    private static GptService gptService;
+    private final GptService gptService;
 
     @ResponseBody
     @GetMapping("/python-data")
-    public String getPythonData() {
-        String pythonData = gptService.callPythonAPI();
+    public String getPythonData(@RequestParam String system, @RequestParam String user) {
+        String pythonData = gptService.callPythonAPI(system, user);
         System.out.println("----------");
         System.out.println(pythonData);
         System.out.println("----------");
