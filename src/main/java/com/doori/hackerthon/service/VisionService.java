@@ -1,26 +1,12 @@
 package com.doori.hackerthon.service;
 
 
-import com.doori.hackerthon.util.CallGpt;
-import com.doori.hackerthon.util.SplitLongText;
-import io.github.flashvayne.chatgpt.dto.chat.MultiChatMessage;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
-import io.github.flashvayne.chatgpt.service.ChatgptService;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -50,7 +36,6 @@ public class VisionService {
 
     @SneakyThrows
     public String extractContent(MultipartFile multipartFile) {
-        CallGpt gpt =  new CallGpt();
         String text;
         String name = multipartFile.getOriginalFilename();
         try (final PDDocument document = PDDocument.load(multipartFile.getInputStream())) {
@@ -72,7 +57,6 @@ public class VisionService {
 //            throw new RuntimeException(e);
 //        }
 
-        gpt.initStore(text,name);
         return text;
     }
 

@@ -1,8 +1,21 @@
 package com.doori.hackerthon.service;
 
 import com.doori.hackerthon.dto.Chat;
+import com.doori.hackerthon.dto.ChatResponse;
 import com.doori.hackerthon.entity.ChatMessage;
 import com.doori.hackerthon.repository.mongo.ChatMessageRepository;
+import dev.langchain4j.chain.ConversationalRetrievalChain;
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.DocumentSplitter;
+import dev.langchain4j.data.document.splitter.SentenceSplitter;
+import dev.langchain4j.data.embedding.Embedding;
+import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
+import dev.langchain4j.retriever.EmbeddingStoreRetriever;
+import dev.langchain4j.store.embedding.EmbeddingStore;
+import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import com.doori.hackerthon.entity.AdminGptEntity;
 import com.doori.hackerthon.repository.AdminGptRepository;
 import io.github.flashvayne.chatgpt.dto.chat.MultiChatMessage;
@@ -17,9 +30,21 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+import static dev.langchain4j.data.document.FileSystemDocumentLoader.loadDocument;
+import static java.time.Duration.ofSeconds;
+import static dev.langchain4j.model.openai.OpenAiModelName.TEXT_EMBEDDING_ADA_002;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +54,9 @@ import java.util.List;
 public class GptService {
     private final ChatgptService chatgptService;
     private final ChatMessageRepository chatMessageRepository;
+    @Value("${chatgpt.api-key}")
+    public String OPENAI_API_KEY;
+
     private final AdminGptRepository adminGptRepository;
 
     public List<String> saveExam(){
@@ -127,7 +155,7 @@ public class GptService {
         }
     }
 
-    public String getChatResponse(Chat prompt) {
+    public ChatResponse getChatResponse(Chat prompt) {
 
 
 //        System.out.println(prompt.length());
@@ -160,12 +188,51 @@ public class GptService {
             }
         }
         MultiChatResponse response = chatgptService.multiChatRequest(chatRequest);
-        String answer = String.valueOf(response.getChoices().get(0).getMessage().getContent());
+        ChatResponse answer = new ChatResponse();
+        answer.setMessage(String.valueOf(response.getChoices().get(0).getMessage().getContent()));
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setAi(answer);
+        chatMessage.setAi(answer.getMessage());
         chatMessage.setUser(prompt.getMessage());
         chatMessage.setUserId(prompt.getUserId());
         chatMessageRepository.save(chatMessage);
         return answer;
     }
+    public ChatResponse getChatDocument(Chat prompt){
+        Document document = loadDocument(toPath("/data/data.txt"));
+        System.out.println(OPENAI_API_KEY);
+        DocumentSplitter splitter = new SentenceSplitter();
+        List<TextSegment> segments = splitter.split(document);
+        EmbeddingModel embeddingModel = OpenAiEmbeddingModel.builder()
+                .apiKey(OPENAI_API_KEY)
+                .modelName(TEXT_EMBEDDING_ADA_002)
+                .timeout(ofSeconds(15))
+                .logRequests(true)
+                .logResponses(true)
+                .build();
+
+        List<Embedding> embeddings = embeddingModel.embedAll(segments);
+
+        // Store embeddings into embedding store for further search / retrieval
+        EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
+        embeddingStore.addAll(embeddings, segments);
+        ConversationalRetrievalChain chain = ConversationalRetrievalChain.builder()
+                .chatLanguageModel(OpenAiChatModel.withApiKey(OPENAI_API_KEY))
+                .retriever(EmbeddingStoreRetriever.from(embeddingStore, embeddingModel))
+                // .chatMemory() // you can override default chat memory
+                // .promptTemplate() // you can override default prompt template
+                .build();
+        ChatResponse answer = new ChatResponse();
+        answer.setMessage(chain.execute(prompt.getRole()));
+        System.out.println(answer); // Charlie is a cheerful carrot living in VeggieVille...
+        return answer;
+    }
+    private static Path toPath(String fileName) {
+        try {
+            URL fileUrl = GptService.class.getResource(fileName);
+            return Paths.get(fileUrl.toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
