@@ -31,10 +31,10 @@ public class GptController {
     @Autowired
     private VisionService visionService;
     //chat-gpt 와 간단한 채팅 서비스 소스
-    @PostMapping("message")
-    public MultiChatResponse test(@RequestBody String question) {
-        return chatService.getChatResponse(question);
-    }
+//    @PostMapping("message")
+//    public MultiChatResponse test(@RequestBody String question) {
+//        return chatService.getChatResponse(question);
+//    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String classify(@RequestParam("pdfFile") final MultipartFile file, Model model) {

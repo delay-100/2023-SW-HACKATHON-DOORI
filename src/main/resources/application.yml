@@ -30,13 +30,15 @@ spring:
     mongodb:
       host: 121.187.22.37
       port: 9999
-      authentication-database: HACKERTHON
+      authentication-database: admin
       username: mongouser
       password: mypassword
-      database: RUDoori
-
+      database: HACKERTHON
+pinecone:
+  api:
+    key: 31271348-bece-4289-9869-6dba253257d7
 chatgpt:
-  api-key: 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
+  api-key: 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
   # some properties as below have default values. For descriptions of these fields, please refer to https://platform.openai.com/docs/api-reference/completions/create and https://platform.openai.com/docs/api-reference/chat/create
   url: https://api.openai.com/v1/completions
   model: text-davinci-003
