@@ -44,7 +44,7 @@ public class GptService {
         }
     }
 
-    public MultiChatResponse getChatResponse(Chat prompt) {
+    public String getChatResponse(Chat prompt) {
 
 
 //        System.out.println(prompt.length());
@@ -83,6 +83,6 @@ public class GptService {
         chatMessage.setUser(prompt.getMessage());
         chatMessage.setUserId(prompt.getUserId());
         chatMessageRepository.save(chatMessage);
-        return response;
+        return answer;
     }
 }

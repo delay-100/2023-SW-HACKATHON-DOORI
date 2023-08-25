@@ -81,15 +81,8 @@ public class ChatController {
     // 채팅방 조회
     @PostMapping("/message")
     @ResponseBody
-    public void chatMessage(@RequestBody Chat chat) {
-        gptService.getChatResponse(chat);
-        // System.out.println(map);
-        // xModelAndView mv = new ModelAndView("chat");
-        // mv.addObject("room", chatRoomRepository.findByRoomId(roomId));
-        // return "chat";
-        // gpt 코드를 받아서 던져줄수있게
-//        Message message = new Message("이거거거거거ㅓ걱");
-//        return message;
+    public String chatMessage(@RequestBody Chat chat) {
+        return gptService.getChatResponse(chat);
     }
 //
 //    @PostMapping("/chatbot")
