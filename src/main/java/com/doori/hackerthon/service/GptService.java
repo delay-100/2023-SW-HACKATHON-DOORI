@@ -1,5 +1,8 @@
 package com.doori.hackerthon.service;
 
+import com.doori.hackerthon.dto.Chat;
+import com.doori.hackerthon.entity.ChatMessage;
+import com.doori.hackerthon.repository.mongo.ChatMessageRepository;
 import com.doori.hackerthon.entity.AdminGptEntity;
 import com.doori.hackerthon.repository.AdminGptRepository;
 import io.github.flashvayne.chatgpt.dto.chat.MultiChatMessage;
@@ -25,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GptService {
     private final ChatgptService chatgptService;
+    private final ChatMessageRepository chatMessageRepository;
     private final AdminGptRepository adminGptRepository;
 
     public List<String> saveExam(){
@@ -123,18 +127,19 @@ public class GptService {
         }
     }
 
-    public MultiChatResponse getChatResponse(String prompt) {
+    public String getChatResponse(Chat prompt) {
 
-        System.out.println(prompt.length());
+
+//        System.out.println(prompt.length());
 
 //        // ChatGPT 에게 질문을 던집니다.
         MultiChatMessage message1 = new MultiChatMessage();
         message1.setRole("system");
-        message1.setContent("너는 대학생 학습 도우미이다.");
+        message1.setContent(prompt.getRole());
 
         MultiChatMessage message2 = new MultiChatMessage();
-        message1.setRole("user");
-        message1.setContent(prompt);
+        message2.setRole("user");
+        message2.setContent(prompt.getMessage());
 
         List<MultiChatMessage> list = new ArrayList<>();
         list.add(message1);
@@ -144,8 +149,23 @@ public class GptService {
         chatRequest.setModel("gpt-3.5-turbo");
         chatRequest.setMessages(list);
 
+        List<ChatMessage> messages = chatMessageRepository.findTop2ByUserId(prompt.getUserId());
 
-        return chatgptService.multiChatRequest(chatRequest);
-//        return chatgptService.sendMessage(chatRequest);
+        if(messages.size() != 0){
+            for(ChatMessage message : messages){
+                MultiChatMessage m = new MultiChatMessage();
+                m.setContent(message.getAi());
+                m.setRole("assistant");
+                list.add(m);
+            }
+        }
+        MultiChatResponse response = chatgptService.multiChatRequest(chatRequest);
+        String answer = String.valueOf(response.getChoices().get(0).getMessage().getContent());
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setAi(answer);
+        chatMessage.setUser(prompt.getMessage());
+        chatMessage.setUserId(prompt.getUserId());
+        chatMessageRepository.save(chatMessage);
+        return answer;
     }
 }

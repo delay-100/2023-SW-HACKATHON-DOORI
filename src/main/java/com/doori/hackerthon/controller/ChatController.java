@@ -1,7 +1,8 @@
 package com.doori.hackerthon.controller;
 
-import com.doori.hackerthon.dto.Message;
+import com.doori.hackerthon.dto.Chat;
 import com.doori.hackerthon.service.GptService;
+import io.github.flashvayne.chatgpt.dto.ChatRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -80,21 +81,15 @@ public class ChatController {
     // 채팅방 조회
     @PostMapping("/message")
     @ResponseBody
-    public Message chatMessage(@RequestBody Map<String, String> map) {
-        // System.out.println(map);
-        // xModelAndView mv = new ModelAndView("chat");
-        // mv.addObject("room", chatRoomRepository.findByRoomId(roomId));
-        // return "chat";
-        // gpt 코드를 받아서 던져줄수있게
-        Message message = new Message("이거거거거거ㅓ걱");
-        return message;
+    public String chatMessage(@RequestBody Chat chat) {
+        return gptService.getChatResponse(chat);
     }
-
-    @PostMapping("/chatbot")
-    @ResponseBody
-    public Message callChatBot(@RequestBody Map<String, String> map) {
-        // System.out.println(map.get("title")); - 챗봇 버튼
-        Message message = new Message("챗봇의 응답");
-        return message;
-    }
+//
+//    @PostMapping("/chatbot")
+//    @ResponseBody
+//    public Message callChatBot(@RequestBody Map<String, String> map) {
+//        // System.out.println(map.get("title")); - 챗봇 버튼
+//        Message message = new Message("챗봇의 응답");
+//        return message;
+//    }
 }

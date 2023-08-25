@@ -26,6 +26,17 @@ spring:
     open-in-view: false
     generate-ddl: true
 
+  data:
+    mongodb:
+      host: 121.187.22.37
+      port: 9999
+      authentication-database: admin
+      username: mongouser
+      password: mypassword
+      database: HACKERTHON
+pinecone:
+  api:
+    key: 31271348-bece-4289-9869-6dba253257d7
 chatgpt:
   api-key: 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
   # some properties as below have default values. For descriptions of these fields, please refer to https://platform.openai.com/docs/api-reference/completions/create and https://platform.openai.com/docs/api-reference/chat/create

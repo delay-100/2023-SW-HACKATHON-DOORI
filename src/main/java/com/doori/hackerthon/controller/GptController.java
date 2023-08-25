@@ -4,7 +4,6 @@ import com.doori.hackerthon.dto.ResponseModel;
 import com.doori.hackerthon.service.GptService;
 import com.doori.hackerthon.service.VisionService;
 import io.github.flashvayne.chatgpt.dto.chat.MultiChatMessage;
-import io.github.flashvayne.chatgpt.dto.chat.MultiChatResponse;
 import io.github.flashvayne.chatgpt.service.ChatgptService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -65,14 +64,10 @@ public class GptController {
     public String getSummary() {
         return chatService.getSummary();
     }
-
-
-
-
-    @PostMapping("message")
-    public MultiChatResponse test(@RequestBody String question) {
-        return chatService.getChatResponse(question);
-    }
+//    @PostMapping("message")
+//    public MultiChatResponse test(@RequestBody String question) {
+//        return chatService.getChatResponse(question);
+//    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String classify(@RequestParam("pdfFile") final MultipartFile file, Model model) {
