@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
+  <head>
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <!--    <link-->
     <!--            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"-->
@@ -54,82 +54,282 @@
         align-items: center;
         /* justify-content: center; */
       }
-      #msgArea {
-        margin-bottom: 10px;
+      .msgArea {
+        border: 1px solid #000;
+        background-color: #fff;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        font-family: "SanFrancisco";
+        font-size: 1.25rem;
+        margin: 0 auto 1rem;
+        max-width: 600px;
+        padding: 0.5rem 1.5rem;
+      }
+      .msgArea p {
+        border-radius: 1.15rem;
+        line-height: 1.25;
+        max-width: 75%;
+        padding: 0.5rem 0.875rem;
+        position: relative;
+        word-wrap: break-word;
+      }
+      .msgArea p::before,
+      .msgArea p::after {
+        bottom: -0.1rem;
+        content: "";
+        height: 1rem;
+        position: absolute;
+      }
+
+      /* chatgpt message */
+      .msgArea p.gpt-message {
+        align-items: flex-start;
+        background-color: #e5e5ea;
+        color: #000;
+        width: fit-content;
+      }
+      .msgArea p.gpt-message::after {
+        background-color: #fff;
+        border-bottom-right-radius: 0.5rem;
+        left: 20px;
+        transform: translate(-30px, -2px);
+        width: 10px;
+      }
+      .msgArea p.gpt-message::before {
+        border-bottom-right-radius: 0.8rem 0.7rem;
+        border-left: 1rem solid #e5e5ea;
+        left: -0.35rem;
+        transform: translate(0, -0.1rem);
+      }
+
+      /* chatbot message */
+      .msgArea p.chatbot-message {
+        align-items: flex-start;
+        background-color: #e5e5ea;
+        color: #000;
+        width: fit-content;
+      }
+      .msgArea p.chatbot-message::after {
+        background-color: #fff;
+        border-bottom-right-radius: 0.5rem;
+        left: 20px;
+        transform: translate(-30px, -2px);
+        width: 10px;
+      }
+      .msgArea p.chatbot-message::before {
+        border-bottom-right-radius: 0.8rem 0.7rem;
+        border-left: 1rem solid #e5e5ea;
+        left: -0.35rem;
+        transform: translate(0, -0.1rem);
+      }
+
+      /* user message */
+      .msgArea p.user-message {
+        align-self: flex-end;
+        background-color: #248bf5;
+        color: #fff;
+      }
+      .msgArea p.user-message::after {
+        background-color: #fff;
+        border-bottom-left-radius: 0.5rem;
+        right: -40px;
+        transform: translate(-30px, -2px);
+        width: 10px;
+      }
+      .msgArea p.user-message::before {
+        border-bottom-left-radius: 0.8rem 0.7rem;
+        border-right: 1rem solid #248bf5;
+        right: -0.35rem;
+        transform: translate(0, -0.1rem);
       }
       .input-group {
         margin: 0;
-      }
-      .message-value {
-        font-weight: bold;
-
-        /* position: relative; */
-      }
-      .gpt-message {
-        color: green;
-      }
-      .user-message {
-        /* position: absolute; */
-        float: right;
-        color: black;
-        right: 0;
       }
       .chatbot-message {
         color: purple;
       }
       .msg-input-and-button {
-        /* position: fixed; */
         bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
         box-sizing: border-box;
+      }
+
+      .msg-input-and-button input {
+        flex: 1;
+        margin-right: 10px;
       }
       .scroll-view {
         overflow-y: scroll;
         width: 100%;
         flex: 1;
       }
-      .exam-div {
-        margin-top: auto;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .exam-button {
-        padding: 40px;
-        width: 100%;
+
+      /* 스크롤바의 폭 너비 */
+      .scroll-view::-webkit-scrollbar {
+        width: 10px;
       }
 
+      .scroll-view::-webkit-scrollbar-thumb {
+        background-color: #248bf5;
+        border-radius: 10px;
+      }
+
+      .scroll-view::-webkit-scrollbar-track {
+        background-color: #e8eff5;
+        border-radius: 10px;
+      }
+
+      /* #load-more-button {
+        margin-bottom: auto;
+      } */
+      .exam-div {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        margin-top: auto;
+        /* margin-top: 20px; */
+        /* border: 1px solid black; */
+        /* background-color: #b9d6b6; */
+        margin-bottom: 30px;
+        /* width: 500px; */
+        /* height: 32px; */
+        /* border: 2px solid #a8c2a5; */
+        border-radius: 0.25rem;
+        align-items: center;
+        /* margin-left: 10px;
+        margin-right: 10px; */
+      }
+      .exam-button {
+        /* width: 100%; */
+        /* display: inline-block; */
+        /* font-weight: 400; */
+        text-align: center;
+        background-color: #b9d6b6;
+        /* padding: 6px 12px; */
+        /* font-size: 1rem; */
+        padding: 20px;
+        padding-right: 30px;
+        padding-left: 30px;
+        border-radius: 0.25rem;
+        /* border: 5px solid black; */
+        transition: color 0.15s ease-in-out;
+        background-color: 0.15s ease-in-out;
+        border-color: 0.15s ease-in-out;
+        box-shadow: 0.15s ease-in-out;
+        color: #156102;
+        font-weight: bold;
+        margin: 10px;
+        text-decoration: none; /* 링크 텍스트에 밑줄 제거 */
+      }
+
+      .exam-button.exam-button:hover {
+        background-color: #ffff;
+        border-color: #135c02;
+        color: #156102;
+      }
+
+      .chatbot-btn {
+        cursor: pointer;
+        outline: 0;
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out;
+        background-color: 0.15s ease-in-out;
+        border-color: 0.15s ease-in-out;
+        box-shadow: 0.15s ease-in-out;
+        color: #0d6efd;
+        border-color: #0d6efd;
+        margin: 10px;
+      }
+
+      .chatbot-btn:hover {
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+      }
+      .chat-label {
+        padding: 10px;
+      }
+      #msg {
+        margin: 10px;
+        width: 500px;
+        height: 32px;
+        font-size: 15px;
+        border: 0;
+        border-radius: 0.25rem;
+        outline: none;
+        padding-left: 10px;
+        background-color: rgb(233, 233, 233);
+      }
+      #button-send {
+        margin-right: 10px;
+        cursor: pointer;
+        outline: 0;
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 16px;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out;
+        background-color: 0.15s ease-in-out;
+        border-color: 0.15s ease-in-out;
+        box-shadow: 0.15s ease-in-out;
+      }
+
+      #button-send:hover {
+        color: #fff;
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+      }
     </style>
-</head>
-<body>
-<div class="container">
-    <div class="first-column">
+  </head>
+  <body>
+    <div class="container">
+      <div class="first-column">
         <!-- 과목명 -->
         <label>과목명이 들어갈 곳이에용</label>
         <!--챗봇 관련(static) 버튼 리스트-->
         <div class="button-list">
-            <button
-                    class="btn"
-                    th:each="chatbot : ${chatbotList}"
-                    th:onclick="chatbotButtonOnPress([[${chatbot}]])"
-                    th:text="${chatbot}"
-            ></button>
+          <button
+            class="chatbot-btn"
+            th:each="chatbot : ${chatbotList}"
+            th:onclick="chatbotButtonOnPress([[${chatbot}]])"
+            th:text="${chatbot}"
+          ></button>
         </div>
         <div class="more-button">
-            <button class="btn" id="load-more-button">공학용 계산기</button>
+          <button class="btn" id="load-more-button">공학용 계산기</button>
         </div>
         <div class="target-div" style="display: none"></div>
         <div class="exam-div">
-            <button class="exam-button">시험 보기</button>
+          <a class="exam-button" th:href="@{/exam}">시험 보러가기</a>
         </div>
-    </div>
-    <div class="divide-line"></div>
-    <div class="second-column">
+      </div>
+      <div class="divide-line"></div>
+      <div class="second-column">
         <!--    <label th:text="${subject_name}"></label>-->
         <embed
-                height="100%"
-                th:src="@{/pdf/example.pdf}"
-                type="application/pdf"
-                width="100%"
+          height="100%"
+          th:src="@{/pdf/example1.pdf}"
+          type="application/pdf"
+          width="100%"
         />
         <!-- 과목 db 관련 버튼 리스트 -->
 
@@ -139,33 +339,33 @@
         </tr> -->
 
         <!-- th:onclick="'chatbotButtonOnPress(\'' + ${chatbot} + '\')'" -->
-    </div>
-    <div class="divide-line"></div>
-    <div class="third-column">
+      </div>
+      <div class="divide-line"></div>
+      <div class="third-column">
         <div class="chat-label">
-            <label style="font-weight: bold">채팅</label>
+          <label style="font-weight: bold; padding: 10">채팅</label>
         </div>
         <div class="scroll-view">
-            <!-- <div class="col-6"></div> -->
-            <div id="msgArea">
-                <div id="loading-spinner" style="display: none">Loading...</div>
-            </div>
+          <!-- <div class="col-6"></div> -->
+          <div class="msgArea">
+            <div id="loading-spinner" style="display: none">Loading...</div>
+          </div>
         </div>
         <div class="msg-input-and-button">
-            <input class="form-control" id="msg" type="text"/>
-            <button
-                    class="btn btn-outline-secondary"
-                    id="button-send"
-                    type="button"
-            >
-                전송
-            </button>
+          <input class="form-control" id="msg" type="text" />
+          <button
+            class="btn btn-outline-secondary"
+            id="button-send"
+            type="button"
+          >
+            전송
+          </button>
         </div>
+      </div>
     </div>
-</div>
-</body>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script th:inline="javascript">
+  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script th:inline="javascript">
     $(document).ready(function () {
       $("#button-send").on("click", function (e) {
         var msg = document.getElementById("msg");
@@ -174,10 +374,10 @@
           message: msg.value,
           // writer: username
         };
-        str = "<div class='message-value'>";
-        str += "<div class='user-message'>" + msg.value + "</div>";
-        str += "</div>";
-        $("#msgArea").append(str);
+
+        var str = "";
+        str += "<p class='user-message'>" + msg.value + "</p>";
+        $(".msgArea").append(str);
         $("#loading-spinner").show();
         // AJAX를 사용하여 서버로 POST 요청 전송
         $.ajax({
@@ -193,11 +393,10 @@
             console.log(response);
             var message = response.message;
             var str = "";
-            str = "<div class='message-value'>";
-            str += "<div class='gpt-message'>" + message + "</b>";
-            str += "</div></div>";
+            str += "<p class='gpt-message'>" + message + "</p";
+            // str += "</div></div>";
             // }
-            $("#msgArea").append(str);
+            $(".msgArea").append(str);
           },
           error: function (error) {
             // 에러 처리
@@ -210,6 +409,7 @@
         });
         msg.value = "";
       });
+
       var isHtmlVisible = false; // 초기에는 HTML이 숨겨져 있는 상태
 
       $("#load-more-button").on("click", function () {
@@ -248,18 +448,19 @@
           console.log(response.message);
           var message = response.message;
           var str = "";
-          str = "<div class='col-6'>";
-          str += "<div class='chatbot-message'>";
-          str += "<b>" + chatbotName + " :" + message + "</b>";
-          str += "</div></div>";
+          str +=
+            "<p class='chatbot-message'>" +
+            chatbotName +
+            " : " +
+            message +
+            "</p>";
           // }
-          $("#msgArea").append(str);
+          $(".msgArea").append(str);
         },
         error: function (error) {
           console.error("chatBotRequest request error:", error);
         },
       });
     }
-
-</script>
+  </script>
 </html>

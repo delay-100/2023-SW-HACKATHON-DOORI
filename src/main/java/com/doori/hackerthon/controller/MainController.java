@@ -27,6 +27,11 @@ public class MainController {
         return "/calculator";
     }
 
+    @GetMapping("/exam")
+    public String getExam() {
+        return "/exam";
+    }
+
     @GetMapping("/admin")
     public String getAdminPage() {
         return "/admin/uploadPDF";
