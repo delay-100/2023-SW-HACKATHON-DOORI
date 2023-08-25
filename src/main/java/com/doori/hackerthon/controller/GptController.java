@@ -4,7 +4,6 @@ import com.doori.hackerthon.dto.ResponseModel;
 import com.doori.hackerthon.service.GptService;
 import com.doori.hackerthon.service.VisionService;
 import io.github.flashvayne.chatgpt.dto.chat.MultiChatMessage;
-import io.github.flashvayne.chatgpt.dto.chat.MultiChatResponse;
 import io.github.flashvayne.chatgpt.service.ChatgptService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +24,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/chat-gpt")
 public class GptController {
     private final GptService chatService;
-
-
     private final ChatgptService chatgptService;
     @Autowired
     private VisionService visionService;
