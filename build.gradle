@@ -28,7 +28,7 @@ dependencies {
 	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.1'
-
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 //	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-vision', version: '1.2.7.RELEASE'
 	implementation 'commons-io:commons-io:2.11.0'
 //	implementation 'com.google.cloud:google-cloud-storage'
@@ -45,7 +45,7 @@ dependencies {
 	implementation group: 'com.google.cloud', name: 'google-cloud-vision', version: '3.21.0'
 // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-autoconfigure
 	implementation group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: '3.1.2'
-
+	implementation 'dev.langchain4j:langchain4j:0.21.0'
 }
 
 
