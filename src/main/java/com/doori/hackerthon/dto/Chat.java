@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-public class Message {
+public class Chat {
+    private String userId;
+    private String role;
     private String message;
+
 }
