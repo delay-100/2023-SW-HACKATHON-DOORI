@@ -4,8 +4,82 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <title>Title이에여</title>
+    <style>
+      select {
+        width: 200px;
+
+        padding: 0.8em 0.5em;
+
+        border: 1px solid #999;
+
+        font-family: inherit;
+
+        background: url("arrow.jpg") no-repeat 95% 50%;
+
+        border-radius: 0px;
+
+        -webkit-appearance: none;
+
+        -moz-appearance: none;
+
+        appearance: none;
+      }
+
+      select::-ms-expand {
+        display: none;
+      }
+
+      #button-send {
+        margin-right: 10px;
+        cursor: pointer;
+        outline: 0;
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        display: inline-block;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        border: 1px solid transparent;
+        padding: 6px 12px;
+        font-size: 16px;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out;
+        background-color: 0.15s ease-in-out;
+        border-color: 0.15s ease-in-out;
+        box-shadow: 0.15s ease-in-out;
+      }
+
+      #button-send:hover {
+        color: #fff;
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+      }
+      #msg {
+        margin: 10px;
+        width: 200px;
+        height: 32px;
+        font-size: 15px;
+        border: 0;
+        border-radius: 0.25rem;
+        outline: none;
+        padding-left: 10px;
+        background-color: rgb(233, 233, 233);
+      }
+    </style>
   </head>
-  <body>
+  <body
+    style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    "
+  >
+    <div>
+      <h1>GPT는 학습 도우미</h1>
+    </div>
     <div>
       <a th:href="@{/admin}">ADMIN 페이지</a>
     </div>
@@ -21,26 +95,36 @@
         </ul>
       </div>
     </div>
-    <form method="post" th:action="@{/chat/room}    ">
-      <select name="departmentList">
-        <option
-          th:each="department : ${departmentList}"
-          th:text="${department}"
-        ></option>
-      </select>
-      <select name="subjectList">
-        <option
-          th:each="subject : ${subjectList}"
-          th:text="${subject}"
-        ></option>
-      </select>
-      <input
-        class="form-control"
-        name="userId"
-        placeholder="학번을 입력해주세요."
-        type="text"
-      />
-      <button class="btn btn-secondary">개설하기</button>
+
+    <form method="post" th:action="@{/chat/room}">
+      <div>
+        <select name="departmentList">
+          <option
+            th:each="department : ${departmentList}"
+            th:text="${department}"
+          ></option>
+        </select>
+        <select name="subjectList">
+          <option
+            th:each="subject : ${subjectList}"
+            th:text="${subject}"
+          ></option>
+        </select>
+
+        <select name="weekList">
+          <option th:each="week : ${weekList}" th:text="${week}"></option>
+        </select>
+      </div>
+      <div style="text-align: center">
+        <input
+          class="form-control"
+          name="userId"
+          placeholder="학번을 입력해주세요."
+          type="text"
+          id="msg"
+        />
+        <button class="btn btn-secondary" id="button-send">공부 시작</button>
+      </div>
     </form>
     <!--<div class="drop-area" id="drop-area">-->
     <!--    <p>Drag and drop a PDF file here</p>-->

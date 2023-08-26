@@ -96,17 +96,17 @@ public class AdminGptService {
                 "연결 설정 없음: Best Effort는 연결 설정과 종료 절차가 필요하지 않습니다. 따라서 연결형 서비스보다 빠른 데이터 전송이 가능합니다.");
         summaryList.add(
                 "라우팅은 컴퓨터 네트워크에서 데이터 패킷이 출발지에서 목적지로 전달되는 경로를 결정하는 과정입니다. 이 과정은 데이터 패킷이 네트워크를 통해 어떻게 이동할지를 제어하고 관리합니다. 라우팅은 다음과 같은 주요 개념으로 설명됩니다:" +
-                "라우터 (Router): 라우터는 네트워크 장비로서 데이터 패킷을 받아들이고 패킷을 다음 경로로 전달하는 역할을 합니다. 라우터는 패킷의 목적지 주소를 분석하고, 패킷을 가장 적절한 출력 인터페이스로 전송합니다." +
-                "라우팅 테이블 (Routing Table): 라우팅 테이블은 라우터가 사용하는 중요한 자료구조입니다. 이 테이블은 네트워크 상의 다양한 목적지 주소에 대한 경로 정보를 포함하고 있으며, 패킷이 어떤 방향으로 전달되어야 하는지 결정하는 데 사용됩니다." +
-                "라우팅 알고리즘 (Routing Algorithm): 라우터가 라우팅 테이블을 작성하고 업데이트하는 데 사용하는 알고리즘입니다. 라우팅 알고리즘은 다양한 기준을 고려하여 최적의 경로를 선택하고 업데이트합니다." +
-                "정적 라우팅 vs. 동적 라우팅: 정적 라우팅은 관리자가 수동으로 라우팅 테이블을 설정하는 방식으로, 간단하고 예측 가능한 경로를 생성합니다. 동적 라우팅은 라우터 간에 라우팅 정보를 자동으로 교환하여 네트워크 상황에 따라 최적의 경로를 동적으로 조정합니다." +
-                "경로 선택 기준: 라우터는 패킷의 목적지 주소, 경로의 비용, 대역폭, 신뢰성 등 다양한 기준을 고려하여 경로를 선택합니다." +
-                "인터넷과 라우팅: 인터넷은 수많은 라우터로 구성되어 있으며, 데이터 패킷은 다중 라우터를 통해 목적지까지 전달됩니다. 각 라우터는 패킷을 받아 라우팅 테이블을 사용하여 다음 경로를 결정하고 패킷을 전달합니다.");
+                        "라우터 (Router): 라우터는 네트워크 장비로서 데이터 패킷을 받아들이고 패킷을 다음 경로로 전달하는 역할을 합니다. 라우터는 패킷의 목적지 주소를 분석하고, 패킷을 가장 적절한 출력 인터페이스로 전송합니다." +
+                        "라우팅 테이블 (Routing Table): 라우팅 테이블은 라우터가 사용하는 중요한 자료구조입니다. 이 테이블은 네트워크 상의 다양한 목적지 주소에 대한 경로 정보를 포함하고 있으며, 패킷이 어떤 방향으로 전달되어야 하는지 결정하는 데 사용됩니다." +
+                        "라우팅 알고리즘 (Routing Algorithm): 라우터가 라우팅 테이블을 작성하고 업데이트하는 데 사용하는 알고리즘입니다. 라우팅 알고리즘은 다양한 기준을 고려하여 최적의 경로를 선택하고 업데이트합니다." +
+                        "정적 라우팅 vs. 동적 라우팅: 정적 라우팅은 관리자가 수동으로 라우팅 테이블을 설정하는 방식으로, 간단하고 예측 가능한 경로를 생성합니다. 동적 라우팅은 라우터 간에 라우팅 정보를 자동으로 교환하여 네트워크 상황에 따라 최적의 경로를 동적으로 조정합니다." +
+                        "경로 선택 기준: 라우터는 패킷의 목적지 주소, 경로의 비용, 대역폭, 신뢰성 등 다양한 기준을 고려하여 경로를 선택합니다." +
+                        "인터넷과 라우팅: 인터넷은 수많은 라우터로 구성되어 있으며, 데이터 패킷은 다중 라우터를 통해 목적지까지 전달됩니다. 각 라우터는 패킷을 받아 라우팅 테이블을 사용하여 다음 경로를 결정하고 패킷을 전달합니다.");
         summaryList.add("OSI 7계층 모델은 다음과 같은 계층으로 구성됩니다:" +
                 "물리 계층:" +
                 "물리적 매체을 통해 비트 스트림을 전송합니다." +
                 "주요 기능: 비트 전송, 전압 및 시그널 규격, 물리적 연결 관리" +
-                "데이터 링크 계층:"+
+                "데이터 링크 계층:" +
                 "물리 계층에서 전송된 비트를 프레임으로 그룹화하고 오류 검출 및 수정을 수행합니다." +
                 "주요 기능: 프레임 생성 및 검사, 흐름 제어, 오류 감지 및 수정" +
                 "네트워크 계층:" +
@@ -168,15 +168,16 @@ public class AdminGptService {
 
         List<ExamDto> examDtos = new ArrayList<>();
         for (int i = 1; i <= questionList.size(); i++) {
-            if(id==2&&i==3||i==6)
-            examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1),false));
-            else if(id ==3&& i == 2)
-                examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1),false));
+            if (id == 2 && i == 3 || i == 6)
+                examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1), false));
+            else if (id == 3 && i == 2)
+                examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1), false));
             else
-                examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1),true));
+                examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1), true));
         }
         return examDtos;
     }
+
     public List<SummaryDto> getSummary() {
         AdminGptEntity adminGptEntity = adminGptRepository.findById(8L).get();
 
@@ -187,8 +188,8 @@ public class AdminGptService {
         System.out.println(keyword.get(0));
         System.out.println(summary.get(0));
         List<SummaryDto> summaryDtoList = new ArrayList<>();
-        for(int i=0 ;i <3; i++){
-            SummaryDto summaryDto = new SummaryDto(i+1, question.get(i),answer.get(i),keyword.get(i),summary.get(i));
+        for (int i = 0; i < 3; i++) {
+            SummaryDto summaryDto = new SummaryDto(i + 1, question.get(i), answer.get(i), keyword.get(i), summary.get(i));
             summaryDtoList.add(summaryDto);
         }
 

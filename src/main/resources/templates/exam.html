@@ -4,8 +4,61 @@
     <meta charset="UTF-8" />
     <title>EXAM</title>
   </head>
+  <style>
+    .exam-answer-button {
+      cursor: pointer;
+      outline: 0;
+      display: inline-block;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: center;
+      background-color: transparent;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 1rem;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out;
+      background-color: 0.15s ease-in-out;
+      border-color: 0.15s ease-in-out;
+      box-shadow: 0.15s ease-in-out;
+      color: #0d6efd;
+      border-color: #0d6efd;
+      margin: 10px;
+    }
+    .exam-answer-button:hover {
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+    .exam-all-answer-button {
+      margin-right: 10px;
+      cursor: pointer;
+      outline: 0;
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+      display: inline-block;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: center;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 16px;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out;
+      background-color: 0.15s ease-in-out;
+      border-color: 0.15s ease-in-out;
+      box-shadow: 0.15s ease-in-out;
+    }
+
+    .exam-all-answer-button:hover {
+      color: #fff;
+      background-color: #0b5ed7;
+      border-color: #0a58ca;
+    }
+  </style>
   <body>
-    <p>문제를 풀어보고 답변해주세요.</p>
+    <p>문제에 대해 아는 것을 적어보세요.</p>
     <div
       style="padding: 10px"
       th:each="examDto : ${examList}"
