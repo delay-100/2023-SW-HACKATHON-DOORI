@@ -5,6 +5,7 @@ import com.doori.hackerthon.dto.SummaryDto;
 import com.doori.hackerthon.entity.AdminGptEntity;
 import com.doori.hackerthon.repository.AdminGptRepository;
 import lombok.RequiredArgsConstructor;
+import org.python.antlr.ast.keyword;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -70,24 +71,12 @@ public class AdminGptService {
         adminGptEntity.setAnswer(answerList);
         adminGptRepository.save(adminGptEntity);
     }
-
-    public void saveSummary() {
-        List<String> questionList = new ArrayList<>();
-        List<String> answerList = new ArrayList<>();
-        List<String> keywordList = new ArrayList<>();
+    public void saveFirstSmry(){
         List<String> summaryList = new ArrayList<>();
-        questionList.add("Best Effort란 무엇을 의미하며, 어떤 종류의 통신 서비스를 설명하나요?");
-        questionList.add("정적 라우팅은 무엇이고 장단점은 무엇인가요?");
-        questionList.add("어떤 OSI 계층에서 데이터의 에러 검출과 복구를 수행하나요?");
-
-        answerList.add("Best Effort은 통신 네트워크에서 데이터 전달을 최선을 다해 시도하되, 데이터의 분실, 중복, 순서 변경 및 비트 오류와 같은 문제에 대한 보장을 제공하지 않는 비연결형 서비스를 의미합니다.");
-        answerList.add("정적 라우팅은 라우터 관리자가 수동으로 경로를 설정하는 방법입니다. 라우터가 네트워크 변경 사항을 자동으로 감지하지 않으며 설정이 변경되지 않는 한 항상 동일한 경로를 사용합니다. 장점은 예측 가능하고 간단하며 안정적이지만 네트워크가 크게 확장되면 유지 관리가 어려울 수 있습니다.");
-        answerList.add("에러 검출과 복구는 2번째 계층, 데이터 링크 계층에서 수행합니다.");
-
+        List<String> keywordList = new ArrayList<>();
         keywordList.add("Best Effort");
         keywordList.add("라우팅");
         keywordList.add("OSI 7계층");
-
         summaryList.add("Best Effort은 네트워크 통신에서 사용되는 서비스 형태 중 하나로, 데이터 전달의 최선을 다하지만 데이터 전송의 신뢰성이나 품질을 보장하지 않는 원칙을 의미합니다. Best Effort 서비스는 다음과 같은 특징을 갖습니다:" +
                 "신뢰성 부족: Best Effort에서는 데이터 패킷을 최대한 빠르게 전송하려고 노력하지만, 데이터의 분실, 중복 전송, 순서 변경, 지연 등의 문제가 발생할 수 있습니다. 이러한 문제에 대한 복구 기능이나 재전송은 제공되지 않습니다." +
                 "자원 효율성: Best Effort 서비스는 연결 설정 및 종료와 같은 추가 오버헤드 없이 데이터를 빠르게 전송하는 데 중점을 둡니다. 이로써 네트워크 자원을 효율적으로 사용할 수 있습니다." +
@@ -96,9 +85,8 @@ public class AdminGptService {
                 "연결 설정 없음: Best Effort는 연결 설정과 종료 절차가 필요하지 않습니다. 따라서 연결형 서비스보다 빠른 데이터 전송이 가능합니다.");
         summaryList.add(
                 "라우팅은 컴퓨터 네트워크에서 데이터 패킷이 출발지에서 목적지로 전달되는 경로를 결정하는 과정입니다. 이 과정은 데이터 패킷이 네트워크를 통해 어떻게 이동할지를 제어하고 관리합니다. 라우팅은 다음과 같은 주요 개념으로 설명됩니다:" +
-                        "라우터 (Router): 라우터는 네트워크 장비로서 데이터 패킷을 받아들이고 패킷을 다음 경로로 전달하는 역할을 합니다. 라우터는 패킷의 목적지 주소를 분석하고, 패킷을 가장 적절한 출력 인터페이스로 전송합니다." +
-                        "라우팅 테이블 (Routing Table): 라우팅 테이블은 라우터가 사용하는 중요한 자료구조입니다. 이 테이블은 네트워크 상의 다양한 목적지 주소에 대한 경로 정보를 포함하고 있으며, 패킷이 어떤 방향으로 전달되어야 하는지 결정하는 데 사용됩니다." +
-                        "라우팅 알고리즘 (Routing Algorithm): 라우터가 라우팅 테이블을 작성하고 업데이트하는 데 사용하는 알고리즘입니다. 라우팅 알고리즘은 다양한 기준을 고려하여 최적의 경로를 선택하고 업데이트합니다." +
+                        "라우터: 라우터는 네트워크 장비로서 데이터 패킷을 받아들이고 패킷을 다음 경로로 전달하는 역할을 합니다. 라우터는 패킷의 목적지 주소를 분석하고, 패킷을 가장 적절한 출력 인터페이스로 전송합니다." +
+                        "라우팅 알고리즘: 라우터가 라우팅 테이블을 작성하고 업데이트하는 데 사용하는 알고리즘입니다. 라우팅 알고리즘은 다양한 기준을 고려하여 최적의 경로를 선택하고 업데이트합니다." +
                         "정적 라우팅 vs. 동적 라우팅: 정적 라우팅은 관리자가 수동으로 라우팅 테이블을 설정하는 방식으로, 간단하고 예측 가능한 경로를 생성합니다. 동적 라우팅은 라우터 간에 라우팅 정보를 자동으로 교환하여 네트워크 상황에 따라 최적의 경로를 동적으로 조정합니다." +
                         "경로 선택 기준: 라우터는 패킷의 목적지 주소, 경로의 비용, 대역폭, 신뢰성 등 다양한 기준을 고려하여 경로를 선택합니다." +
                         "인터넷과 라우팅: 인터넷은 수많은 라우터로 구성되어 있으며, 데이터 패킷은 다중 라우터를 통해 목적지까지 전달됩니다. 각 라우터는 패킷을 받아 라우팅 테이블을 사용하여 다음 경로를 결정하고 패킷을 전달합니다.");
@@ -124,6 +112,46 @@ public class AdminGptService {
                 "애플리케이션 계층:" +
                 "최종 사용자 애플리케이션과 상호 작용하며 네트워크 서비스 및 응용 프로그램을 제공합니다." +
                 "주요 기능: 사용자 인터페이스, 데이터 전송 및 응용 프로그램 지원");
+
+        AdminGptEntity adminGptEntity = new AdminGptEntity();
+        adminGptEntity.setSummary(summaryList);
+        adminGptEntity.setKeyword(keywordList);
+        adminGptRepository.save(adminGptEntity);
+    }
+    public List<SummaryDto> getFirstSmry(){
+        AdminGptEntity adminGptEntity = adminGptRepository.findById(6L).get();
+        List<String> summary = adminGptEntity.getSummary();
+        List<String> keyword = adminGptEntity.getKeyword();
+        List<SummaryDto> summaryList = new ArrayList<>();
+
+        for(int i=0; i<3; i++)
+            summaryList.add(new SummaryDto(keyword.get(i), summary.get(i)));
+
+        return summaryList;
+    }
+
+    public void saveSummary() {
+        List<String> questionList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>();
+        List<String> keywordList = new ArrayList<>();
+        List<String> summaryList = new ArrayList<>();
+        questionList.add("Best Effort란 무엇을 의미하며, 어떤 종류의 통신 서비스를 설명하나요?");
+        questionList.add("정적 라우팅은 무엇이고 장단점은 무엇인가요?");
+        questionList.add("어떤 OSI 계층에서 데이터의 에러 검출과 복구를 수행하나요?");
+
+        answerList.add("Best Effort은 통신 네트워크에서 데이터 전달을 최선을 다해 시도하되, 데이터의 분실, 중복, 순서 변경 및 비트 오류와 같은 문제에 대한 보장을 제공하지 않는 비연결형 서비스를 의미합니다.");
+        answerList.add("정적 라우팅은 라우터 관리자가 수동으로 경로를 설정하는 방법입니다. 라우터가 네트워크 변경 사항을 자동으로 감지하지 않으며 설정이 변경되지 않는 한 항상 동일한 경로를 사용합니다. 장점은 예측 가능하고 간단하며 안정적이지만 네트워크가 크게 확장되면 유지 관리가 어려울 수 있습니다.");
+        answerList.add("에러 검출과 복구는 2번째 계층, 데이터 링크 계층에서 수행합니다.");
+
+        keywordList.add("Best Effort");
+        keywordList.add("라우팅");
+        keywordList.add("OSI 7계층");
+
+        summaryList.add("라우팅 (Routing): 라우팅은 네트워크에서 데이터 패킷이 출발지에서 목적지로 전달되는 경로를 결정하는 프로세스를 의미합니다. 데이터 패킷은 다수의 라우터를 거쳐 목적지로 전달됩니다. 각 라우터는 패킷의 목적지 주소를 기반으로 최적의 경로를 선택하고, 라우팅 테이블을 사용하여 패킷을 다음 경로로 전달합니다. 라우팅은 네트워크에서 데이터 흐름을 관리하고 효율적인 통신을 지원하는 핵심 프로세스입니다.");
+        summaryList.add("Best Effort: 네트워크 통신에서 데이터 패킷의 전달을 최선을 다해 시도하되, 패킷의 분실, 중복 전달, 패킷 순서 변경, 비트 오류 등이 발생할 경우에도 패킷 재전송이나 오류 확인 등의 기능을 제공하지 않는 통신 방식을 의미합니다. 이것은 IP 프로토콜의 특성 중 하나이며, IP는 데이터 패킷을 최대한 빠르게 전달하는 것을 목표로 하며, 데이터 신뢰성 및 오류 복구는 상위 계층에서 처리합니다.");
+        summaryList.add("OSI 7계층: OSI 모델은 컴퓨터 네트워크에서 통신 프로토콜의 기능을 7개의 계층으로 나눈 모델입니다. 이 모델은 네트워크 통신을 구조화하고 표준화하기 위해 개발되었습니다. 각 계층은 특정한 역할을 수행하며, 위에서 아래로 데이터를 전달하면서 네트워크 통신을 관리합니다. OSI 모델의 각 계층은 다음과 같습니다: 물리 계층, 데이터 링크 계층, 네트워크 계층, 전송 계층, 세션 계층, 표현 계층, 응용 계층");
+
+
         AdminGptEntity adminGptEntity = new AdminGptEntity();
         adminGptEntity.setQuestion(questionList);
         adminGptEntity.setAnswer(answerList);
@@ -140,7 +168,7 @@ public class AdminGptService {
         keywordList.add("Best Effort");
         keywordList.add("IP프로토콜");
         keywordList.add("라우팅");
-        keywordList.add("IP주소");
+        keywordList.add("OSI 7계층");
         keywordList.add("IPv6");
         keywordList.add("메시지 분할 전송");
         AdminGptEntity adminGptEntity = new AdminGptEntity();
@@ -179,7 +207,7 @@ public class AdminGptService {
     }
 
     public List<SummaryDto> getSummary() {
-        AdminGptEntity adminGptEntity = adminGptRepository.findById(8L).get();
+        AdminGptEntity adminGptEntity = adminGptRepository.findById(5L).get();
 
         List<String> keyword = adminGptEntity.getKeyword();
         List<String> summary = adminGptEntity.getSummary();
