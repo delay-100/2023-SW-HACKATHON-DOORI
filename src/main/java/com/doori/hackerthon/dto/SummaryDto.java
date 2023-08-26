@@ -20,6 +20,15 @@ public class SummaryDto {
         this.summary = summary;
     }
 
+    public SummaryDto(String summary) {
+        this.summary = summary;
+    }
+
+    public SummaryDto(String keyword, String summary) {
+        this.keyword = keyword;
+        this.summary = summary;
+    }
+
     public SummaryDto() {
 
     }

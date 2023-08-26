@@ -58,7 +58,20 @@ public class AdminGptController {
     }
     @GetMapping("/summary")
     public String getSummary(Model model) {
-        model.addAttribute("summary", adminGptService.getSummary());
+        model.addAttribute("summaryList", adminGptService.getSummary());
         return "summary";
     }
+
+    @ResponseBody
+    @PostMapping("/firstSmry")
+    public void saveSmry() {
+        adminGptService.saveFirstSmry();
+    }
+
+    @GetMapping("/firstSmry")
+    public String getFirstSmry(Model model) {
+        model.addAttribute("firstSmryList", adminGptService.getFirstSmry());
+        return "firstSmry";
+    }
+
 }
