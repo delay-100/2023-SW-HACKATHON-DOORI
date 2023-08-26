@@ -8,6 +8,10 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +28,7 @@ public class VisionService {
 //
 //    @Value("${gcp.dir.name}")
 //    private String gcpDirectoryName;
-//    public static final String STATIC_DIRECTORY = "src/main/resources/data";
+    public static final String STATIC_DIRECTORY = "src/main/resources/data";
 //    private ChatgptService chatgptService;
 //    public void processGcsFiles() throws Exception {
 //        // Read and process GCS files using your credentials and configurations
@@ -44,18 +48,18 @@ public class VisionService {
         } catch (final Exception ex) {
             text = "Error parsing PDF";
         }
-//
-//        try {
-////            String dataPath = new ClassPathResource(STATIC_DIRECTORY).getFile().getAbsolutePath();
-//            // 파일 생성 및 내용 쓰기
-//            String fileName = "data.txt";
-//
-//            Files.write(Paths.get(STATIC_DIRECTORY, fileName), text.getBytes());
-//            System.out.println("File created successfully.");
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+
+        try {
+//            String dataPath = new ClassPathResource(STATIC_DIRECTORY).getFile().getAbsolutePath();
+            // 파일 생성 및 내용 쓰기
+            String fileName = "data.txt";
+
+            Files.write(Paths.get(STATIC_DIRECTORY, fileName), text.getBytes());
+            System.out.println("File created successfully.");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return text;
     }
