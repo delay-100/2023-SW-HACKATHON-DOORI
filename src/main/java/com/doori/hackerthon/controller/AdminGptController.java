@@ -1,14 +1,13 @@
 package com.doori.hackerthon.controller;
 
+import com.doori.hackerthon.dto.ExamDto;
+import com.doori.hackerthon.dto.RetestDto;
 import com.doori.hackerthon.service.AdminGptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,17 +23,27 @@ public class AdminGptController {
     public void saveExam() {
         adminGptService.saveExam();
     }
-
-    //    @ResponseBody
-    @GetMapping("/fistExam")
-    public String getExam(Model model) {
-        System.out.println("==============");
-        System.out.println(adminGptService.getExam());
-        System.out.println("==============");
-        model.addAttribute("examList", adminGptService.getExam());
-        return "/exam";
+    @GetMapping("/exam")
+    public String getExam(Model model, @RequestParam Long id) {
+        model.addAttribute("exampleList", adminGptService.getExam(id));
+        return "exam";
     }
-
+    @ResponseBody
+    @PostMapping("/retest")
+    public void saveRetest() {
+        adminGptService.saveRetest();
+    }
+    @ResponseBody
+    @PostMapping("/tdtest")
+    public void saveTdtest() {
+        adminGptService.saveTdtest();
+    }
+    @ResponseBody
+    @GetMapping("/exam")
+    public List<ExamDto> getRetest(Model model, @RequestParam Long id) {
+        List<ExamDto> retestList = adminGptService.getExam(id);
+        return retestList;
+    }
     @ResponseBody
     @PostMapping("/keyword")
     public List<String> saveKeyword(Model model) {
@@ -45,11 +54,6 @@ public class AdminGptController {
     public String getKeyword(Model model) {
         model.addAttribute("keywordList", adminGptService.getKeyword());
         return "keyword";
-    }
-
-    @GetMapping("/tt")
-    public void test() {
-        System.out.println("-----tsetes---");
     }
 
     @PostMapping("/summary")
