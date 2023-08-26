@@ -204,6 +204,7 @@ public class GptService {
         System.out.println(OPENAI_API_KEY);
         DocumentSplitter splitter = new SentenceSplitter();
         List<TextSegment> segments = splitter.split(document);
+        //
 //        EmbeddingModel embeddingModel = OpenAiEmbeddingModel.builder()
 //                .apiKey(OPENAI_API_KEY)
 //                .modelName(TEXT_EMBEDDING_ADA_002)
@@ -222,6 +223,7 @@ public class GptService {
                 .build();
 
         List<Embedding> embeddings = huggingFaceEmbeddingModel.embedAll(segments);
+//        List<Embedding> embeddings = embeddingModel.embedAll(segments);
         // Store embeddings into embedding store for further search / retrieval
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
         embeddingStore.addAll(embeddings, segments);
@@ -237,6 +239,49 @@ public class GptService {
         answer.setMessage(chain.execute(prompt.getRole()));
         System.out.println(answer); // Charlie is a cheerful carrot living in VeggieVille...
         return answer;
+    }
+
+    public void getContentIndex(){
+        //불러올 텍스트를 기반으로 값으로 데이터 불러오기
+        String role = "1. You are an expert at organizing data. 2. Extract important keywords. 3. Answer as short and concise as possible.";
+        StringBuilder indexes = new StringBuilder();
+        //텍스트 파일 load
+        Document document = loadDocument(toPath("/data/data.txt"));
+        System.out.println(OPENAI_API_KEY);
+        DocumentSplitter splitter = new SentenceSplitter();
+        List<TextSegment> segments = splitter.split(document);
+
+
+
+        for(TextSegment segment : segments){
+
+            List<MultiChatMessage> list = new ArrayList<>();
+
+            // ChatGPT 에게 질문을 던짐
+            MultiChatMessage message1 = new MultiChatMessage();
+            message1.setRole("system");
+            message1.setContent(role);
+            MultiChatMessage message2 = new MultiChatMessage();
+            message2.setRole("user");
+            message2.setContent(segment.text());
+            list.add(message1);
+            list.add(message2);
+
+            //메시지 전달 전, GPT 환경 설정
+            MultiChatRequest chatRequest = new MultiChatRequest();
+            chatRequest.setModel("gpt-3.5-turbo");
+            chatRequest.setMessages(list);
+            chatRequest.setTemperature(0.2);
+
+            //메시지 전달
+            MultiChatResponse response = chatgptService.multiChatRequest(chatRequest);
+
+            //결과 값을 string builder로 append
+            indexes.append(response.getChoices().get(0).getMessage().getContent());
+            indexes.append("\n");
+        }
+        System.out.println(indexes.toString());
+
     }
     private static Path toPath(String fileName) {
         try {
