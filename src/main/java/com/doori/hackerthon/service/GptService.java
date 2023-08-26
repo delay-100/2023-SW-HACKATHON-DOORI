@@ -216,8 +216,8 @@ public class GptService {
 
         HuggingFaceEmbeddingModel huggingFaceEmbeddingModel = HuggingFaceEmbeddingModel.builder()
                 .accessToken("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")
-                .modelId(SENTENCE_TRANSFORMERS_ALL_MINI_LM_L6_V2)
-//                .modelId("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+//                .modelId(SENTENCE_TRANSFORMERS_ALL_MINI_LM_L6_V2)
+                .modelId("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
                 .timeout(ofSeconds(600))
                 .build();
 
@@ -225,6 +225,8 @@ public class GptService {
         // Store embeddings into embedding store for further search / retrieval
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
         embeddingStore.addAll(embeddings, segments);
+
+        //검색부분
         ConversationalRetrievalChain chain = ConversationalRetrievalChain.builder()
                 .chatLanguageModel(OpenAiChatModel.withApiKey(OPENAI_API_KEY))
                 .retriever(EmbeddingStoreRetriever.from(embeddingStore, huggingFaceEmbeddingModel))
