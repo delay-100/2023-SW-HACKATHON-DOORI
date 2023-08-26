@@ -1,11 +1,10 @@
 package com.doori.hackerthon.service;
 
 import com.doori.hackerthon.dto.ExamDto;
-import com.doori.hackerthon.dto.KeywordDto;
+import com.doori.hackerthon.dto.RetestDto;
 import com.doori.hackerthon.entity.AdminGptEntity;
 import com.doori.hackerthon.repository.AdminGptRepository;
 import lombok.RequiredArgsConstructor;
-import org.python.antlr.ast.keyword;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,10 +26,44 @@ public class AdminGptService {
         questionList.add("정적 라우팅은 무엇이고 장단점은 무엇인가요?");
         answerList.add("OSI 모델의 보안 기능은 주로 7번째 계층인 애플리케이션 계층에서 수행됩니다.");
         answerList.add("MAC (Media Access Control) 주소를 사용하여 데이터 프레임을 관리하고 네트워크 내에서 전달하는 계층은 OSI 모델의 2번째 계층인 \"데이터 링크 계층\"입니다.");
-        answerList.add("Best effort은 통신 네트워크에서 데이터 전달을 최선을 다해 시도하되, 데이터의 분실, 중복, 순서 변경 및 비트 오류와 같은 문제에 대한 보장을 제공하지 않는 비연결형 서비스를 의미합니다.");
+        answerList.add("잘못된 답변입니다. Best effort은 통신 네트워크에서 데이터 전달을 최선을 다해 시도하되, 데이터의 분실, 중복, 순서 변경 및 비트 오류와 같은 문제에 대한 보장을 제공하지 않는 비연결형 서비스를 의미합니다.");
         answerList.add("Best effort 서비스의 주요 특징 중 하나는 네트워크 리소스를 효율적으로 활용하여 대역폭을 최대한 확보하려는 노력입니다. 이것은 네트워크에서 다양한 유형의 트래픽이 경쟁하고, 모든 패킷이 최선을 다해 전달되려고 시도함을 의미합니다.");
         answerList.add("라우팅은 네트워크에서 패킷을 출발지에서 목적지로 전달하는 프로세스입니다. 라우터라고 불리는 네트워크 장비는 패킷의 목적지 주소를 확인하고 최적의 경로를 선택하여 패킷을 다음 라우터로 전송합니다. ");
         answerList.add("정적 라우팅은 라우터 관리자가 수동으로 경로를 설정하는 방법입니다. 라우터가 네트워크 변경 사항을 자동으로 감지하지 않으며 설정이 변경되지 않는 한 항상 동일한 경로를 사용합니다. 장점은 예측 가능하고 간단하며 안정적이지만 네트워크가 크게 확장되면 유지 관리가 어려울 수 있습니다.");
+
+        AdminGptEntity adminGptEntity = new AdminGptEntity();
+        adminGptEntity.setQuestion(questionList);
+        adminGptEntity.setAnswer(answerList);
+        adminGptRepository.save(adminGptEntity);
+    }
+
+    public void saveRetest() {
+        List<String> questionList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>();
+        questionList.add("OSI 모델의 몇 번째 계층에서 데이터를 응용 프로그램과 상호 작용하도록 합니다?");
+        questionList.add("어떤 OSI 계층에서 데이터의 에러 검출과 복구를 수행하나요?");
+        questionList.add("동적 라우팅은 무엇인가요?");
+        questionList.add("라우터가 라우팅 결정을 내리는 데 어떤 정보를 사용하나요?");
+
+        answerList.add("7번째 계층, 애플리케이션 계층에서 데이터를 응용 프로그램과 상호 작용하도록 합니다.");
+        answerList.add("잘못된 답변입니다. 에러 검출과 복구는 2번째 계층, 데이터 링크 계층에서 수행합니다.");
+        answerList.add("라우터가 네트워크의 상태를 모니터링하고 변경 사항에 따라 최적의 경로를 선택하는 방법입니다. 동적 라우팅은 네트워크 변경 사항에 신속하게 대응하고 관리가 용이합니다.");
+        answerList.add("라우터가 라우팅 결정을 내리는 데 사용하는 주요 정보에는 목적지 IP 주소, 라우터가 알고 있는 네트워크 토폴로지 정보, 경로 비용(메트릭), TTL(Time To Live) 등이 포함됩니다.");
+
+        AdminGptEntity adminGptEntity = new AdminGptEntity();
+        adminGptEntity.setQuestion(questionList);
+        adminGptEntity.setAnswer(answerList);
+        adminGptRepository.save(adminGptEntity);
+    }
+
+    public void saveTdtest() {
+        List<String> questionList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>();
+        questionList.add("OSI 모델의 어떤 계층에서 IP 주소를 사용하여 데이터를 목적지로 전달하나요?");
+        questionList.add("OSI 모델의 몇 번째 계층에서 패킷의 순서를 관리하고 전송 중에 재조립을 수행하나요?");
+
+        answerList.add("3번째 계층, 네트워크 계층에서 IP 주소를 사용하여 데이터를 목적지로 전달합니다.");
+        answerList.add("4번째 계층, 전송 계층에서 패킷의 순서를 관리하고 전송 중에 재조립을 수행합니다.");
 
         AdminGptEntity adminGptEntity = new AdminGptEntity();
         adminGptEntity.setQuestion(questionList);
@@ -66,8 +99,8 @@ public class AdminGptService {
         return keywordList;
     }
 
-    public List<ExamDto> getExam() {
-        AdminGptEntity adminGptEntity = adminGptRepository.findById(2L).get();
+    public List<ExamDto> getExam(Long id) {
+        AdminGptEntity adminGptEntity = adminGptRepository.findById(id).get();
         List<String> questionList = adminGptEntity.getQuestion();
         List<String> answerList = adminGptEntity.getAnswer();
 
@@ -78,6 +111,18 @@ public class AdminGptService {
         }
         return examDtos;
     }
+
+//    public List<ExamDto> getRetest() {
+//        AdminGptEntity adminGptEntity = adminGptRepository.findById(102L).get();
+//        List<String> questionList = adminGptEntity.getQuestion();
+//        List<String> answerList = adminGptEntity.getAnswer();
+//
+//        List<ExamDto> examDtos = new ArrayList<>();
+//        for (int i = 1; i <= questionList.size(); i++) {
+//            examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1)));
+//        }
+//        return examDtos;
+//    }
 
     public String saveSummary() {
         String summary = "summary";

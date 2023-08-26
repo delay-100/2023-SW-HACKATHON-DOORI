@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AdminGptEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private List<String> keyword;
     private List<String> question;
