@@ -65,13 +65,13 @@ public class ChatController {
 
     // 채팅방 조회
     @PostMapping("/room")
-    public String getRoom(Model model) {
+    public String getRoom(@RequestParam("userId") String userId, Model model) {
 //        xModelAndView mv = new ModelAndView("chat");
 //        mv.addObject("room", chatRoomRepository.findByRoomId(roomId));
         List<String> chatbotList = Arrays.asList("힌트", "요약 보기", "도움말");
-
+//        System.out.println("userId: " + userId);
         model.addAttribute("chatbotList", chatbotList);
-//        model.addAttribute("userId" );
+        model.addAttribute("userId", userId);
         return "chat";
     }
 
@@ -79,6 +79,7 @@ public class ChatController {
     @PostMapping("/message")
     @ResponseBody
     public ChatResponse chatMessage(@RequestBody Chat chat) {
+
         return gptService.getChatResponse(chat);
     }
 

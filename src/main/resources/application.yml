@@ -1,7 +1,7 @@
 spring:
   cloud:
     gcp:
-#      project-id: doori-sw-hackathon-service
+      #      project-id: doori-sw-hackathon-service
       credentials:
         location: classpath:libs/keys/sw-hackathon-doori-ec7dfee581c7.json
       vision:
@@ -38,7 +38,7 @@ pinecone:
   api:
     key: 31271348-bece-4289-9869-6dba253257d7
 chatgpt:
-  api-key: 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
+  api-key: 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
   # some properties as below have default values. For descriptions of these fields, please refer to https://platform.openai.com/docs/api-reference/completions/create and https://platform.openai.com/docs/api-reference/chat/create
   url: https://api.openai.com/v1/completions
   model: text-davinci-003
@@ -46,13 +46,13 @@ chatgpt:
   temperature: 1.0
   top-p: 1.0
   multi:
-      url: https://api.openai.com/v1/chat/completions
-      model: gpt-3.5-turbo
-      max-tokens: 2000
-      temperature: 0.8
-      top-p: 1.0
+    url: https://api.openai.com/v1/chat/completions
+    model: gpt-3.5-turbo
+    max-tokens: 2000
+    temperature: 0.8
+    top-p: 1.0
   image:
-      url: https://api.openai.com/v1/images/generations
+    url: https://api.openai.com/v1/images/generations
 server:
   port: 8002
 
@@ -60,7 +60,7 @@ gcp:
   config:
     file: libs/keys/sw-hackathon-doori-ec7dfee581c7.json
   project:
-       id: sw-hackathon-doori
+    id: sw-hackathon-doori
   bucket:
     id: doori-bucket-01
   dir:

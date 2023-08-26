@@ -303,6 +303,11 @@
   <body>
     <div class="container">
       <div class="first-column">
+        <input type="hidden" th:value="${userId}" />
+        <div style="display: flex">
+          <p th:utext="${userId}"></p>
+          <p>님! 반갑습니다.</p>
+        </div>
         <!-- 과목명 -->
         <label>과목명이 들어갈 곳이에용</label>
         <!--챗봇 관련(static) 버튼 리스트-->
