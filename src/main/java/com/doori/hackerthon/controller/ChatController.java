@@ -91,4 +91,10 @@ public class ChatController {
 
         return gptService.getChatDocument(chat);
     }
+
+    @PostMapping("/index")
+    @ResponseBody
+    public void getIndex(@RequestBody Chat chat) {
+         gptService.getContentIndex();
+    }
 }
