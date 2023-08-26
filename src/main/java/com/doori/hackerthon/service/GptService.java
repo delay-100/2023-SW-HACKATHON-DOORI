@@ -62,76 +62,6 @@ public class GptService {
 
     private final AdminGptRepository adminGptRepository;
 
-    public List<String> saveExam(){
-        List<String> list = new ArrayList<>();
-        list.add("list1");
-        list.add("list2");
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setExam(list);
-        System.out.println(adminGptEntity.getExam());
-        adminGptRepository.save(adminGptEntity);
-        return list;
-    }
-    public List<String> saveIndex(){
-        List<String> list = new ArrayList<>();
-        list.add("index1");
-        list.add("index2");
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setIndex(list);
-        System.out.println(adminGptEntity.getIndex());
-        adminGptRepository.save(adminGptEntity);
-        return list;
-    }
-    public List<String> saveKeyword(){
-        List<String> list = new ArrayList<>();
-        list.add("keyword1");
-        list.add("keyword2");
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setKeyword(list);
-        System.out.println(adminGptEntity.getKeyword());
-        adminGptRepository.save(adminGptEntity);
-        return list;
-    }
-    public String saveSummary(){
-        String summary  = "summary";
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setSummary(summary);
-        System.out.println(adminGptEntity.getSummary());
-        adminGptRepository.save(adminGptEntity);
-        return summary;
-    }
-    public String getSummary(){
-        String summary  = "summary";
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setSummary(summary);
-        System.out.println(adminGptEntity.getSummary());
-        adminGptRepository.save(adminGptEntity);
-        return summary;
-    }
-    /*public List<String> getIndex(){
-        String summary  = "summary";
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setSummary(summary);
-        System.out.println(adminGptEntity.getSummary());
-        adminGptRepository.save(adminGptEntity);
-        return summary;
-    }
-    public List<String> getExam(){
-        String summary  = "summary";
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setSummary(summary);
-        System.out.println(adminGptEntity.getSummary());
-        adminGptRepository.save(adminGptEntity);
-        return summary;
-    }
-    public List<String> getKeyword(){
-        String summary  = "summary";
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setSummary(summary);
-        System.out.println(adminGptEntity.getSummary());
-        adminGptRepository.save(adminGptEntity);
-        return summary;
-    }*/
     public String callPythonAPI(String system, String user) {
         try {
             HttpClient httpClient = HttpClients.createDefault();
@@ -204,6 +134,7 @@ public class GptService {
         System.out.println(OPENAI_API_KEY);
         DocumentSplitter splitter = new SentenceSplitter();
         List<TextSegment> segments = splitter.split(document);
+        //
 //        EmbeddingModel embeddingModel = OpenAiEmbeddingModel.builder()
 //                .apiKey(OPENAI_API_KEY)
 //                .modelName(TEXT_EMBEDDING_ADA_002)
@@ -222,6 +153,7 @@ public class GptService {
                 .build();
 
         List<Embedding> embeddings = huggingFaceEmbeddingModel.embedAll(segments);
+//        List<Embedding> embeddings = embeddingModel.embedAll(segments);
         // Store embeddings into embedding store for further search / retrieval
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
         embeddingStore.addAll(embeddings, segments);
@@ -237,6 +169,49 @@ public class GptService {
         answer.setMessage(chain.execute(prompt.getRole()));
         System.out.println(answer); // Charlie is a cheerful carrot living in VeggieVille...
         return answer;
+    }
+
+    public void getContentIndex(){
+        //불러올 텍스트를 기반으로 값으로 데이터 불러오기
+        String role = "1. You are an expert at organizing data. 2. Extract important keywords. 3. Answer as short and concise as possible.";
+        StringBuilder indexes = new StringBuilder();
+        //텍스트 파일 load
+        Document document = loadDocument(toPath("/data/data.txt"));
+        System.out.println(OPENAI_API_KEY);
+        DocumentSplitter splitter = new SentenceSplitter();
+        List<TextSegment> segments = splitter.split(document);
+
+
+
+        for(TextSegment segment : segments){
+
+            List<MultiChatMessage> list = new ArrayList<>();
+
+            // ChatGPT 에게 질문을 던짐
+            MultiChatMessage message1 = new MultiChatMessage();
+            message1.setRole("system");
+            message1.setContent(role);
+            MultiChatMessage message2 = new MultiChatMessage();
+            message2.setRole("user");
+            message2.setContent(segment.text());
+            list.add(message1);
+            list.add(message2);
+
+            //메시지 전달 전, GPT 환경 설정
+            MultiChatRequest chatRequest = new MultiChatRequest();
+            chatRequest.setModel("gpt-3.5-turbo");
+            chatRequest.setMessages(list);
+            chatRequest.setTemperature(0.2);
+
+            //메시지 전달
+            MultiChatResponse response = chatgptService.multiChatRequest(chatRequest);
+
+            //결과 값을 string builder로 append
+            indexes.append(response.getChoices().get(0).getMessage().getContent());
+            indexes.append("\n");
+        }
+        System.out.println(indexes.toString());
+
     }
     private static Path toPath(String fileName) {
         try {

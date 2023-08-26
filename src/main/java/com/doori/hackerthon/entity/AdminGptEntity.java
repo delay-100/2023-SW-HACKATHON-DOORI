@@ -1,5 +1,6 @@
 package com.doori.hackerthon.entity;
 
+import com.doori.hackerthon.dto.ExamDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,9 +20,9 @@ public class AdminGptEntity {
     @Id
     @GeneratedValue
     private Long id;
-    private List<String> index;
     private List<String> keyword;
-    private List<String> exam;
+    private List<String> question;
+    private List<String> answer;
+    private List<String> retestList;
     private String summary;
-
 }
