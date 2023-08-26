@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <title>Title이에여</title>
     <style>
       select {
@@ -66,79 +66,83 @@
         padding-left: 10px;
         background-color: rgb(233, 233, 233);
       }
+
+
     </style>
-  </head>
-  <body
-    style="
+</head>
+<body
+        style="
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       flex-direction: column;
     "
-  >
-    <div>
-      <h1>GPT는 학습 도우미</h1>
-    </div>
-    <div>
-      <a th:href="@{/admin}">ADMIN 페이지</a>
-    </div>
+>
+<div>
+    <h1>GPT는 학습 도우미</h1>
+</div>
+<div>
+    <a th:href="@{/admin}">ADMIN 페이지</a>
+</div>
 
-    <div class="container">
-      <div>
+<div class="container">
+    <div>
         <ul th:each="room : ${list}">
-          <li>
-            <a th:href="@{/chat/room(roomId=${room.roomId})}"
-              >[[${room.name}]]</a
-            >
-          </li>
+            <li>
+                <a th:href="@{/chat/room(roomId=${room.roomId})}"
+                >[[${room.name}]]</a
+                >
+            </li>
         </ul>
-      </div>
     </div>
+</div>
 
-    <form method="post" th:action="@{/chat/room}">
-      <div>
+<!--    <form method="post" th:action="@{/chat/room}">-->
+
+<form method="get" th:action="@{/gptTest/keyword}">
+    <div>
         <select name="departmentList">
-          <option
-            th:each="department : ${departmentList}"
-            th:text="${department}"
-          ></option>
+            <option
+                    th:each="department : ${departmentList}"
+                    th:text="${department}"
+            ></option>
         </select>
         <select name="subjectList">
-          <option
-            th:each="subject : ${subjectList}"
-            th:text="${subject}"
-          ></option>
+            <option
+                    th:each="subject : ${subjectList}"
+                    th:text="${subject}"
+            ></option>
         </select>
 
         <select name="weekList">
-          <option th:each="week : ${weekList}" th:text="${week}"></option>
+            <option th:each="week : ${weekList}" th:text="${week}"></option>
         </select>
-      </div>
-      <div style="text-align: center">
+    </div>
+    <div style="text-align: center">
         <input
-          class="form-control"
-          name="userId"
-          placeholder="학번을 입력해주세요."
-          type="text"
-          id="msg"
+                class="form-control"
+                id="msg"
+                name="userId"
+                placeholder="학번을 입력해주세요."
+                type="text"
         />
         <button class="btn btn-secondary" id="button-send">공부 시작</button>
-      </div>
-    </form>
-    <!--<div class="drop-area" id="drop-area">-->
-    <!--    <p>Drag and drop a PDF file here</p>-->
-    <!--    <form action="@{/api/v1}" enctype="multipart/form-data" id="upload-form">-->
-    <!--        <input id="pdfFileInput" name="pdfFile" type="file">-->
-    <!--        <button type="submit">Upload</button>-->
-    <!--    </form>-->
+    </div>
+</form>
+<!--<div class="drop-area" id="drop-area">-->
+<!--    <p>Drag and drop a PDF file here</p>-->
+<!--    <form action="@{/api/v1}" enctype="multipart/form-data" id="upload-form">-->
+<!--        <input id="pdfFileInput" name="pdfFile" type="file">-->
+<!--        <button type="submit">Upload</button>-->
+<!--    </form>-->
 
-    <!--    <div class="file-info" id="file-info" th:if="${pdfFileName}">-->
-    <!--        <h2>Uploaded PDF Info</h2>-->
-    <!--        <p th:text="'File name: ' + ${pdfFileName}"></p>-->
-    <!--    </div>-->
-    <!--</div>-->
+<!--    <div class="file-info" id="file-info" th:if="${pdfFileName}">-->
+<!--        <h2>Uploaded PDF Info</h2>-->
+<!--        <p th:text="'File name: ' + ${pdfFileName}"></p>-->
+<!--    </div>-->
+<!--</div>-->
 
-    <script th:src="@{/js/scripts.js}"></script>
-  </body>
+<script th:src="@{/js/scripts.js}"></script>
+</body>
 </html>

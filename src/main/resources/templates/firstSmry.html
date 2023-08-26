@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <style>
+        
+    .scroll-view {
+      overflow-y: scroll;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* 스크롤바의 폭 너비 */
+    .scroll-view::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .scroll-view::-webkit-scrollbar-thumb {
+      background-color: #248bf5;
+      border-radius: 10px;
+    }
+
+    .scroll-view::-webkit-scrollbar-track {
+      background-color: #e8eff5;
+      border-radius: 10px;
+    }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="scroll-view">
+        <div class="first-column">
+            <div class="chat-label">
+                <label
+                        style="
+                font-weight: bold;
+                padding: 10;
+                border-bottom: 1px solid #c3c3c3;
+              "
+                >나만의 정리본</label
+                >
+            </div>
+            <div th:each="summary : ${firstSmryList}">
+                <div>
+              <span
+                      th:style="'font-weight: bold;'"
+                      th:text="${summary.keyword}"
+              ></span>
+                    <br/>
+                    <br/>
+                    <div>[정리]</div>
+                    <span th:text="${summary.summary}"></span>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a a th:href="@{/gptTest/exam?id=2}">시험보기</a>
+</div>
+</body>
+</html>
