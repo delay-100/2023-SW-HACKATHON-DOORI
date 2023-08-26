@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
+  <head>
+    <meta charset="UTF-8" />
     <title>Title</title>
-</head>
-<body>
-<!--    <label-->
-<!--            class="chatbot-btn"-->
-<!--            th:each="chatbot : ${chatbotList}"-->
-<!--            th:text="${chatbot}"-->
-<!--    ></label>-->
+  </head>
+  <body>
+    <!--    <label-->
+    <!--            class="chatbot-btn"-->
+    <!--            th:each="chatbot : ${chatbotList}"-->
+    <!--            th:text="${chatbot}"-->
+    <!--    ></label>-->
 
-<label>자신이 잘 알지 못하는 키워드에 대해 선택해주세요 </label>
-<div>
-    <div class="button-list">
+    <label>자신이 잘 알지 못하는 키워드에 대해 선택해주세요 </label>
+    <div>
+      <div class="button-list">
         <button
-                class="keyword-col"
-                th:attr="name=${keyword}"
-                th:each="keyword : ${keywordList}"
-                th:text="${keyword}"
+          class="keyword-col"
+          th:attr="name=${keyword}"
+          th:each="keyword : ${keywordList}"
+          th:text="${keyword}"
         ></button>
-    </div>
+      </div>
 
-    <button onclick="submitKeywordButtonOnPress()">완료</button>
-</div>
-<div>
-    <label>[알지 못하는 것]</label>
-    <div class="dont-know-list"></div>
-</div>
-</body>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script th:inline="javascript">
+      <a a th:href="@{/gptTest/exam?id=2}">완료</a>
+    </div>
+    <div>
+      <label>[알지 못하는 것]</label>
+      <div class="dont-know-list"></div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script th:inline="javascript">
     $(document).ready(function () {
       var selectedKeywords = []; // 선택된 키워드를 저장하는 배열
 
@@ -62,8 +62,5 @@
         });
       }
     });
-
-
-
-</script>
+  </script>
 </html>

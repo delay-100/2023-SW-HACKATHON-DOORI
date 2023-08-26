@@ -18,7 +18,9 @@
     <textarea
             id="answer-${examDto.id}"
             placeholder="답을 입력해주세요."
+            style="width: 300px; height: 80px"
     ></textarea>
+
     <button class="exam-answer-button" data-exam-id="${examDto.id}">
         정답보기
     </button>
@@ -29,7 +31,10 @@
     ></div>
 </div>
 <button class="exam-all-answer-button">전체 정답보기</button>
-<a>시험 더보기</a>
+<th:block th:unless="${id == 5}">
+    <a th:href="@{/gptTest/exam?id={id}(id=${id})}">시험 더보기</a>
+</th:block>
+
 <a>나만의 노트</a>
 </body>
 
@@ -54,6 +59,12 @@
         $(".exam-answer").toggle(); // 토글하여 보이기/숨기기
       });
     });
+
+
+
+
+
+
 
 </script>
 </html>
