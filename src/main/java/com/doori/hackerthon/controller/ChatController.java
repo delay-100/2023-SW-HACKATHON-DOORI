@@ -1,6 +1,7 @@
 package com.doori.hackerthon.controller;
 
 import com.doori.hackerthon.dto.Chat;
+import com.doori.hackerthon.dto.ChatResponse;
 import com.doori.hackerthon.service.GptService;
 import lombok.AllArgsConstructor;
 import org.python.core.Py;
@@ -25,8 +26,8 @@ public class ChatController {
 
     @ResponseBody
     @GetMapping("/python-data")
-    public String getPythonData() {
-        String pythonData = gptService.callPythonAPI();
+    public String getPythonData(@RequestParam String system, @RequestParam String user) {
+        String pythonData = gptService.callPythonAPI(system, user);
         System.out.println("----------");
         System.out.println(pythonData);
         System.out.println("----------");
@@ -76,22 +77,14 @@ public class ChatController {
     // 채팅방 조회
     @PostMapping("/message")
     @ResponseBody
-    public void chatMessage(@RequestBody Chat chat) {
-        gptService.getChatResponse(chat);
-        // System.out.println(map);
-        // xModelAndView mv = new ModelAndView("chat");
-        // mv.addObject("room", chatRoomRepository.findByRoomId(roomId));
-        // return "chat";
-        // gpt 코드를 받아서 던져줄수있게
-//        Message message = new Message("이거거거거거ㅓ걱");
-//        return message;
+    public ChatResponse chatMessage(@RequestBody Chat chat) {
+        return gptService.getChatResponse(chat);
     }
-//
-//    @PostMapping("/chatbot")
-//    @ResponseBody
-//    public Message callChatBot(@RequestBody Map<String, String> map) {
-//        // System.out.println(map.get("title")); - 챗봇 버튼
-//        Message message = new Message("챗봇의 응답");
-//        return message;
-//    }
+
+    @PostMapping("/chatbot")
+    @ResponseBody
+    public ChatResponse callChatBot(@RequestBody Chat chat) {
+
+        return gptService.getChatDocument(chat);
+    }
 }
