@@ -23,23 +23,28 @@ public class AdminGptController {
     @ResponseBody
     @PostMapping("/firstExam")
     public void saveExam() {
-         adminGptService.saveExam();
-    }
-    @ResponseBody
-    @GetMapping("/fistExam")
-    public List<ExamDto> getExam() {
-        return adminGptService.getExam();
+        adminGptService.saveExam();
     }
 
+//    @ResponseBody
+    @GetMapping("/fistExam")
+    public String getExam(Model model) {
+        model.addAttribute("keywordList", adminGptService.getExam());
+        return "exam";
+    }
+
+    @ResponseBody
     @PostMapping("/keyword")
     public List<String> saveKeyword(Model model) {
         return adminGptService.saveKeyword();
     }
+
     @GetMapping("/keyword")
     public String getKeyword(Model model) {
         model.addAttribute("keywordList", adminGptService.saveKeyword());
         return "keyword";
     }
+
     @GetMapping("/tt")
     public void test() {
         System.out.println("-----tsetes---");

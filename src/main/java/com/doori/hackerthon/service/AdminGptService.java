@@ -71,6 +71,7 @@ public class AdminGptService {
         List<String> questionList = adminGptEntity.getQuestion();
         List<String> answerList = adminGptEntity.getAnswer();
 
+
         List<ExamDto> examDtos = new ArrayList<>();
         for (int i = 1; i <= questionList.size(); i++) {
             examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1)));

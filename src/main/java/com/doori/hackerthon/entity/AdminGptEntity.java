@@ -3,6 +3,7 @@ package com.doori.hackerthon.entity;
 import com.doori.hackerthon.dto.ExamDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AdminGptEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private List<String> keyword;
     private List<String> question;
