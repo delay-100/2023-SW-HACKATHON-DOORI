@@ -8,8 +8,7 @@ public class KeywordDto {
     private int id;
     private String keyword;
 
-    public KeywordDto(int id, String keyword) {
-        this.id = id;
+    public KeywordDto(String keyword) {
         this.keyword = keyword;
     }
 
