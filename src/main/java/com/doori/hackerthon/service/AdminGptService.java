@@ -1,7 +1,6 @@
 package com.doori.hackerthon.service;
 
 import com.doori.hackerthon.dto.ExamDto;
-import com.doori.hackerthon.dto.RetestDto;
 import com.doori.hackerthon.entity.AdminGptEntity;
 import com.doori.hackerthon.repository.AdminGptRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +19,8 @@ public class AdminGptService {
         List<String> answerList = new ArrayList<>();
         questionList.add("OSI 모델의 몇 번째 계층에서 데이터의 압축 및 암호화와 같은 보안 기능이 수행됩니까?");
         questionList.add("OSI 모델의 어떤 계층에서 MAC (Media Access Control) 주소를 사용하여 프레임을 관리하고 네트워크 내에서 데이터 프레임을 전달하나요?");
-        questionList.add("Best effort란 무엇을 의미하며, 어떤 종류의 통신 서비스를 설명하나요?");
-        questionList.add("Best effort 서비스의 주요 특징 중 하나는 무엇이며, 왜 이것이 중요한가요?");
+        questionList.add("Best Effort란 무엇을 의미하며, 어떤 종류의 통신 서비스를 설명하나요?");
+        questionList.add("Best Effort 서비스의 주요 특징 중 하나는 무엇이며, 왜 이것이 중요한가요?");
         questionList.add("라우팅이란 무엇이며, 어떻게 작동하는지 간단히 설명하세요.");
         questionList.add("정적 라우팅은 무엇이고 장단점은 무엇인가요?");
         answerList.add("OSI 모델의 보안 기능은 주로 7번째 계층인 애플리케이션 계층에서 수행됩니다.");
@@ -71,6 +70,72 @@ public class AdminGptService {
         adminGptRepository.save(adminGptEntity);
     }
 
+    public void saveSummary() {
+        List<String> questionList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>();
+        List<String> keywordList = new ArrayList<>();
+        List<String> summaryList = new ArrayList<>();
+        questionList.add("Best Effort란 무엇을 의미하며, 어떤 종류의 통신 서비스를 설명하나요?");
+        questionList.add("정적 라우팅은 무엇이고 장단점은 무엇인가요?");
+        questionList.add("어떤 OSI 계층에서 데이터의 에러 검출과 복구를 수행하나요?");
+
+        answerList.add("Best Effort은 통신 네트워크에서 데이터 전달을 최선을 다해 시도하되, 데이터의 분실, 중복, 순서 변경 및 비트 오류와 같은 문제에 대한 보장을 제공하지 않는 비연결형 서비스를 의미합니다.");
+        answerList.add("정적 라우팅은 라우터 관리자가 수동으로 경로를 설정하는 방법입니다. 라우터가 네트워크 변경 사항을 자동으로 감지하지 않으며 설정이 변경되지 않는 한 항상 동일한 경로를 사용합니다. 장점은 예측 가능하고 간단하며 안정적이지만 네트워크가 크게 확장되면 유지 관리가 어려울 수 있습니다.");
+        answerList.add("에러 검출과 복구는 2번째 계층, 데이터 링크 계층에서 수행합니다.");
+
+        keywordList.add("Best Effort");
+        keywordList.add("OSI 7계층");
+
+        summaryList.add("Best Effort은 네트워크 통신에서 사용되는 서비스 형태 중 하나로, 데이터 전달의 최선을 다하지만 데이터 전송의 신뢰성이나 품질을 보장하지 않는 원칙을 의미합니다. Best Effort 서비스는 다음과 같은 특징을 갖습니다:\n" +
+                "\n" +
+                "신뢰성 부족: Best Effort에서는 데이터 패킷을 최대한 빠르게 전송하려고 노력하지만, 데이터의 분실, 중복 전송, 순서 변경, 지연 등의 문제가 발생할 수 있습니다. 이러한 문제에 대한 복구 기능이나 재전송은 제공되지 않습니다.\n" +
+                "\n" +
+                "자원 효율성: Best Effort 서비스는 연결 설정 및 종료와 같은 추가 오버헤드 없이 데이터를 빠르게 전송하는 데 중점을 둡니다. 이로써 네트워크 자원을 효율적으로 사용할 수 있습니다.\n" +
+                "\n" +
+                "적용 분야: Best Effort는 실시간 데이터 스트리밍, 웹 페이지 로딩, 이메일 전송 등과 같이 신속한 데이터 전달이 중요한 응용 프로그램에 주로 사용됩니다. 하지만 응용 프로그램마다 데이터의 손실이나 순서 변경이 허용되는 정도가 다를 수 있습니다.\n" +
+                "\n" +
+                "전송 보장 없음: Best Effort에서는 데이터 패킷의 전송 여부나 도착 순서를 확인하지 않으며, 수신 측에서 패킷의 상태를 확인하거나 복구하는 역할을 하지 않습니다. 이런 역할은 상위 계층에서 처리해야 합니다.\n" +
+                "\n" +
+                "연결 설정 없음: Best Effort는 연결 설정과 종료 절차가 필요하지 않습니다. 따라서 연결형 서비스보다 빠른 데이터 전송이 가능합니다.");
+        summaryList.add("OSI 7계층은 네트워크 통신을 7개의 계층으로 분할하여 설명하는 모델입니다. 이 모델은 다양한 네트워크 프로토콜과 기술을 이해하고 비교하기 위한 유용한 도구입니다. OSI 7계층 모델은 다음과 같은 계층으로 구성됩니다:\n" +
+                "\n" +
+                "물리 계층 (Physical Layer):\n" +
+                "\n" +
+                "물리적 매체을 통해 비트 스트림을 전송합니다.\n" +
+                "주요 기능: 비트 전송, 전압 및 시그널 규격, 물리적 연결 관리\n" +
+                "데이터 링크 계층:\n" +
+                "\n" +
+                "물리 계층에서 전송된 비트를 프레임으로 그룹화하고 오류 검출 및 수정을 수행합니다.\n" +
+                "주요 기능: 프레임 생성 및 검사, 흐름 제어, 오류 감지 및 수정\n" +
+                "네트워크 계층:\n" +
+                "\n" +
+                "데이터 패킷의 경로를 선택하고 라우팅을 수행하여 목적지까지 데이터 패킷을 전달합니다.\n" +
+                "주요 기능: 라우팅, 패킷 전달, 논리 주소 지정\n" +
+                "전송 계층:\n" +
+                "\n" +
+                "송신 호스트와 수신 호스트 간의 데이터 전달을 관리하며, 데이터의 정확성 및 신뢰성을 제공합니다.\n" +
+                "주요 기능: 데이터 분할 및 재조립, 흐름 제어, 오류 복구\n" +
+                "세션 계층:\n" +
+                "\n" +
+                "통신 세션을 설정, 유지, 및 해제하며, 데이터 교환을 관리합니다.\n" +
+                "주요 기능: 세션 설정 및 유지, 대화 제어\n" +
+                "표현 계층:\n" +
+                "\n" +
+                "데이터 형식을 변환하고 압축, 암호화, 해독 등의 데이터 변환을 수행합니다.\n" +
+                "주요 기능: 데이터 형식 변환, 데이터 암호화, 압축\n" +
+                "애플리케이션 계층:\n" +
+                "\n" +
+                "최종 사용자 애플리케이션과 상호 작용하며 네트워크 서비스 및 응용 프로그램을 제공합니다.\n" +
+                "주요 기능: 사용자 인터페이스, 데이터 전송 및 응용 프로그램 지원\n" +
+                "이렇게 OSI 7계층 모델은 네트워크 통신을 논리적으로 분해하여 각 계층이 특정 기능을 담당하도록 설계되어 있으며, 이를 통해 서로 다른 프로토콜과 기술이 상호 운용성을 갖추도록 도와줍니다.");
+        AdminGptEntity adminGptEntity = new AdminGptEntity();
+        adminGptEntity.setQuestion(questionList);
+        adminGptEntity.setAnswer(answerList);
+        adminGptEntity.setSummary(summaryList);
+        adminGptEntity.setKeyword(keywordList);
+        adminGptRepository.save(adminGptEntity);
+    }
+
     public List<String> saveKeyword() {
         List<String> keywordList = new ArrayList<>();
         keywordList.add("TCP");
@@ -107,40 +172,14 @@ public class AdminGptService {
 
         List<ExamDto> examDtos = new ArrayList<>();
         for (int i = 1; i <= questionList.size(); i++) {
-            examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1)));
+            if(id==2&&i==3||i==6)
+            examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1),false));
+            else if(id ==3&& i == 2)
+                examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1),false));
+            else
+                examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1),true));
         }
         return examDtos;
     }
-
-//    public List<ExamDto> getRetest() {
-//        AdminGptEntity adminGptEntity = adminGptRepository.findById(102L).get();
-//        List<String> questionList = adminGptEntity.getQuestion();
-//        List<String> answerList = adminGptEntity.getAnswer();
-//
-//        List<ExamDto> examDtos = new ArrayList<>();
-//        for (int i = 1; i <= questionList.size(); i++) {
-//            examDtos.add(new ExamDto(i, questionList.get(i - 1), answerList.get(i - 1)));
-//        }
-//        return examDtos;
-//    }
-
-    public String saveSummary() {
-        String summary = "summary";
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setSummary(summary);
-        System.out.println(adminGptEntity.getSummary());
-        adminGptRepository.save(adminGptEntity);
-        return summary;
-    }
-
-    public String getSummary() {
-        String summary = "summary";
-        AdminGptEntity adminGptEntity = new AdminGptEntity();
-        adminGptEntity.setSummary(summary);
-        System.out.println(adminGptEntity.getSummary());
-        adminGptRepository.save(adminGptEntity);
-        return summary;
-    }
-
 
 }

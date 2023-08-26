@@ -25,5 +25,5 @@ public class AdminGptEntity {
     private List<String> question;
     private List<String> answer;
     private List<String> retestList;
-    private String summary;
+    private List<String> summary;
 }
