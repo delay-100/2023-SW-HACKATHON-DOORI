@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <style>
+    .container {
+      display: flex;
+      height: 97vh;
+    }
+    .first-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .second-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* justify-content: center; */
+    }
+
+    .divide-line {
+      border-left: 1px solid #ccc;
+      height: 100%;
+      margin: 0 auto;
+    }
+    .msgArea {
+      border: 1px solid #000;
+      background-color: #fff;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      font-family: "SanFrancisco";
+      font-size: 1.25rem;
+      margin: 0 auto 1rem;
+      max-width: 600px;
+      padding: 0.5rem 1.5rem;
+    }
+    .msgArea p {
+      border-radius: 1.15rem;
+      line-height: 1.25;
+      max-width: 75%;
+      padding: 0.5rem 0.875rem;
+      position: relative;
+      word-wrap: break-word;
+    }
+    .msgArea p::before,
+    .msgArea p::after {
+      bottom: -0.1rem;
+      content: "";
+      height: 1rem;
+      position: absolute;
+    }
+
+    /* chatgpt message */
+    .msgArea p.gpt-message {
+      align-items: flex-start;
+      background-color: #e5e5ea;
+      color: #000;
+      width: fit-content;
+    }
+    .msgArea p.gpt-message::after {
+      background-color: #fff;
+      border-bottom-right-radius: 0.5rem;
+      left: 20px;
+      transform: translate(-30px, -2px);
+      width: 10px;
+    }
+    .msgArea p.gpt-message::before {
+      border-bottom-right-radius: 0.8rem 0.7rem;
+      border-left: 1rem solid #e5e5ea;
+      left: -0.35rem;
+      transform: translate(0, -0.1rem);
+    }
+
+    /* chatbot message */
+    .msgArea p.chatbot-message {
+      align-items: flex-start;
+      background-color: #e5e5ea;
+      color: #000;
+      width: fit-content;
+    }
+    .msgArea p.chatbot-message::after {
+      background-color: #fff;
+      border-bottom-right-radius: 0.5rem;
+      left: 20px;
+      transform: translate(-30px, -2px);
+      width: 10px;
+    }
+    .msgArea p.chatbot-message::before {
+      border-bottom-right-radius: 0.8rem 0.7rem;
+      border-left: 1rem solid #e5e5ea;
+      left: -0.35rem;
+      transform: translate(0, -0.1rem);
+    }
+
+    /* user message */
+    .msgArea p.user-message {
+      align-self: flex-end;
+      background-color: #248bf5;
+      color: #fff;
+    }
+    .msgArea p.user-message::after {
+      background-color: #fff;
+      border-bottom-left-radius: 0.5rem;
+      right: -40px;
+      transform: translate(-30px, -2px);
+      width: 10px;
+    }
+    .msgArea p.user-message::before {
+      border-bottom-left-radius: 0.8rem 0.7rem;
+      border-right: 1rem solid #248bf5;
+      right: -0.35rem;
+      transform: translate(0, -0.1rem);
+    }
+    .input-group {
+      margin: 0;
+    }
+    .chatbot-message {
+      color: purple;
+    }
+    .msg-input-and-button {
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .msg-input-and-button input {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .scroll-view {
+      overflow-y: scroll;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* 스크롤바의 폭 너비 */
+    .scroll-view::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .scroll-view::-webkit-scrollbar-thumb {
+      background-color: #248bf5;
+      border-radius: 10px;
+    }
+
+    .scroll-view::-webkit-scrollbar-track {
+      background-color: #e8eff5;
+      border-radius: 10px;
+    }
+
+    /* #load-more-button {
+        margin-bottom: auto;
+      } */
+    .exam-div {
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      margin-top: auto;
+      /* margin-top: 20px; */
+      /* border: 1px solid black; */
+      /* background-color: #b9d6b6; */
+      margin-bottom: 30px;
+      /* width: 500px; */
+      /* height: 32px; */
+      /* border: 2px solid #a8c2a5; */
+      border-radius: 0.25rem;
+      align-items: center;
+      /* margin-left: 10px;
+        margin-right: 10px; */
+    }
+    .exam-button {
+      /* width: 100%; */
+      /* display: inline-block; */
+      /* font-weight: 400; */
+      text-align: center;
+      background-color: #b9d6b6;
+      /* padding: 6px 12px; */
+      /* font-size: 1rem; */
+      padding: 20px;
+      padding-right: 30px;
+      padding-left: 30px;
+      border-radius: 0.25rem;
+      /* border: 5px solid black; */
+      transition: color 0.15s ease-in-out;
+      background-color: 0.15s ease-in-out;
+      border-color: 0.15s ease-in-out;
+      box-shadow: 0.15s ease-in-out;
+      color: #156102;
+      font-weight: bold;
+      margin: 10px;
+      text-decoration: none; /* 링크 텍스트에 밑줄 제거 */
+    }
+
+    .exam-button.exam-button:hover {
+      background-color: #ffff;
+      border-color: #135c02;
+      color: #156102;
+    }
+
+    .chatbot-btn {
+      cursor: pointer;
+      outline: 0;
+      display: inline-block;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: center;
+      background-color: transparent;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 1rem;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out;
+      background-color: 0.15s ease-in-out;
+      border-color: 0.15s ease-in-out;
+      box-shadow: 0.15s ease-in-out;
+      color: #0d6efd;
+      border-color: #0d6efd;
+      margin: 10px;
+    }
+
+    .chatbot-btn:hover {
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+    .chat-label {
+      padding: 10px;
+    }
+    #msg {
+      margin: 10px;
+      width: 500px;
+      height: 32px;
+      font-size: 15px;
+      border: 0;
+      border-radius: 0.25rem;
+      outline: none;
+      padding-left: 10px;
+      background-color: rgb(233, 233, 233);
+    }
+    #button-send {
+      margin-right: 10px;
+      cursor: pointer;
+      outline: 0;
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+      display: inline-block;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: center;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 16px;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out;
+      background-color: 0.15s ease-in-out;
+      border-color: 0.15s ease-in-out;
+      box-shadow: 0.15s ease-in-out;
+    }
+
+    #button-send:hover {
+      color: #fff;
+      background-color: #0b5ed7;
+      border-color: #0a58ca;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="scroll-view">
+        <div class="first-column">
+          <div class="chat-label">
+            <label
+              style="
+                font-weight: bold;
+                padding: 10;
+                border-bottom: 1px solid #c3c3c3;
+              "
+              >나만의 정리본</label
+            >
+          </div>
+          <div th:each="summary : ${summaryList}">
+            <div>
+              <span
+                th:style="'font-weight: bold;'"
+                th:text="${summary.id}"
+              ></span>
+              <br />
+              <span
+                th:style="'font-weight: bold;'"
+                th:text="${summary.keyword}"
+              ></span>
+              <br /><br />
+              <div>[틀린 문제]</div>
+              <span th:text="${summary.question}"></span>
+              <br /><br />
+
+              <div>[정답]</div>
+              <span th:text="${summary.answer}"></span>
+              <br />
+              <br />
+              <div>[정리]</div>
+              <span th:text="${summary.summary}"></span>
+              <br />
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divide-line"></div>
+      <div class="second-column">
+        <div class="chat-label">
+          <label
+            style="
+              font-weight: bold;
+              padding: 10;
+              border-bottom: 1px solid #c3c3c3;
+            "
+            >채팅</label
+          >
+        </div>
+        <div class="scroll-view">
+          <!-- <div class="col-6"></div> -->
+          <div class="msgArea">
+            <div id="loading-spinner" style="display: none">Loading...</div>
+          </div>
+        </div>
+        <div class="msg-input-and-button">
+          <input class="form-control" id="msg" type="text" />
+          <button
+            class="btn btn-outline-secondary"
+            id="button-send"
+            type="button"
+          >
+            전송
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script th:inline="javascript">
+    $(document).ready(function () {
+      $("#button-send").on("click", function (e) {
+        var msg = document.getElementById("msg");
+        var data = {
+          userId: "20000000",
+          message: msg.value,
+          // writer: username
+        };
+
+        var str = "";
+        str += "<p class='user-message'>" + msg.value + "</p>";
+        $(".msgArea").append(str);
+        $("#loading-spinner").show();
+        // AJAX를 사용하여 서버로 POST 요청 전송
+        $.ajax({
+          type: "POST",
+          url: "/chat/message", // 여기에 POST 요청을 처리할 서버 엔드포인트 URL을 입력
+          data: JSON.stringify(data),
+          contentType: "application/json",
+          beforeSend: function () {
+            // Show loading spinner before sending the request
+            $("#loading-spinner").show();
+          },
+          success: function (response) {
+            console.log(response);
+            var message = response.message;
+            var str = "";
+            str += "<p class='gpt-message'>" + message + "</p";
+            // str += "</div></div>";
+            // }
+            $(".msgArea").append(str);
+          },
+          error: function (error) {
+            // 에러 처리
+            console.error("POST request error:", error);
+          },
+          complete: function () {
+            // Hide loading spinner after the request is completed
+            $("#loading-spinner").hide();
+          },
+        });
+        msg.value = "";
+      });
+
+      var isHtmlVisible = false; // 초기에는 HTML이 숨겨져 있는 상태
+
+      $("#load-more-button").on("click", function () {
+        // AJAX를 사용하여 다른 HTML 페이지를 로드합니다.
+        $.ajax({
+          url: "/calculator", // 다른 페이지의 경로를 여기에 입력
+          type: "GET",
+          success: function (response) {
+            // 서버에서 받은 HTML 코드를 특정 요소에 추가하여 페이지에 표시합니다.
+            $(".target-div").html(response);
+
+            // HTML 창을 보이거나 숨기는 처리
+            if (isHtmlVisible) {
+              $(".target-div").hide();
+              isHtmlVisible = false;
+            } else {
+              $(".target-div").show();
+              isHtmlVisible = true;
+            }
+          },
+          error: function (error) {
+            console.error("Error loading other page:", error);
+          },
+        });
+      });
+    });
+  </script>
+</html>

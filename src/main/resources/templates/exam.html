@@ -1,45 +1,105 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8"/>
+  <head>
+    <meta charset="UTF-8" />
     <title>EXAM</title>
-</head>
-<body>
-<!--<tr>-->
-<!--    <td th:text="${exam.id}"></td>-->
-<!--    <td th:text="${exam.question}"></td>-->
-<!--    <input type="text"/>-->
-<!--</tr>-->
-<p>문제를 풀어보고 답변해주세요.</p>
-<div style="padding: 10px" th:each="examDto : ${examList}">
-    <div th:text="${examDto.id}"></div>
-    <div th:text="${examDto.question}"></div>
-    <br/>
-    <textarea
-            id="answer-${examDto.id}"
-            placeholder="답을 입력해주세요."
-            style="width: 300px; height: 80px"
-    ></textarea>
+  </head>
+  <style>
+    .exam-answer-button {
+      cursor: pointer;
+      outline: 0;
+      display: inline-block;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: center;
+      background-color: transparent;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 1rem;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out;
+      background-color: 0.15s ease-in-out;
+      border-color: 0.15s ease-in-out;
+      box-shadow: 0.15s ease-in-out;
+      color: #0d6efd;
+      border-color: #0d6efd;
+      margin: 10px;
+    }
+    .exam-answer-button:hover {
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+    .exam-all-answer-button {
+      margin-right: 10px;
+      cursor: pointer;
+      outline: 0;
+      color: #fff;
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+      display: inline-block;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: center;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 16px;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out;
+      background-color: 0.15s ease-in-out;
+      border-color: 0.15s ease-in-out;
+      box-shadow: 0.15s ease-in-out;
+    }
 
-    <button class="exam-answer-button" data-exam-id="${examDto.id}">
-        정답보기
-    </button>
+    .exam-all-answer-button:hover {
+      color: #fff;
+      background-color: #0b5ed7;
+      border-color: #0a58ca;
+    }
+  </style>
+  <body>
+    <p>문제에 대해 아는 것을 적어보세요.</p>
     <div
-            class="exam-answer"
-            style="display: none"
-            th:text="'정답: ' + ${examDto.answer}"
-    ></div>
-</div>
-<button class="exam-all-answer-button">전체 정답보기</button>
-<th:block th:unless="${id == 5}">
-    <a th:href="@{/gptTest/exam?id={id}(id=${id})}">시험 더보기</a>
-</th:block>
+      style="padding: 10px"
+      th:each="examDto : ${examList}"
+      th:class="${examDto.bool}"
+    >
+      <div style="font-weight: bold" th:text="${examDto.id}"></div>
+      <div
+        class="exam-result"
+        style="color: red; display: none; font-weight: bold"
+      >
+        오답입니다.
+      </div>
+      <div style="font-weight: bold" th:text="${examDto.question}"></div>
+      <div style="display: none" th:text="${examDto.bool}"></div>
 
-<a>나만의 노트</a>
-</body>
+      <br />
+      <textarea
+        id="answer-${examDto.id}"
+        placeholder="답을 입력해주세요."
+        style="width: 300px; height: 80px"
+      ></textarea>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script th:inline="javascript">
+      <button class="exam-answer-button" data-exam-id="${examDto.id}">
+        정답보기
+      </button>
+      <div
+        class="exam-answer"
+        style="display: none"
+        th:text="'정답: ' + ${examDto.answer}"
+      ></div>
+    </div>
+    <button class="exam-all-answer-button">전체 정답보기</button>
+    <th:block th:unless="${id == 5}">
+      <a th:href="@{/gptTest/exam?id={id}(id=${id})}">시험 더보기</a>
+    </th:block>
+
+    <a th:href="@{/gptTest/summary}">나만의 노트</a>
+  </body>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script th:inline="javascript">
     $(document).ready(function () {
       $(".exam-answer-button").on("click", function () {
         var examId = $(this).closest("div").find("div").first().text(); // 문제 ID 가져오기
@@ -57,14 +117,14 @@
       });
       $(".exam-all-answer-button").on("click", function () {
         $(".exam-answer").toggle(); // 토글하여 보이기/숨기기
+        var falseElements = $(".false"); // 클래스가 false인 모든 요소 선택
+
+        falseElements.each(function () {
+          $(this).css("border", "2px solid red"); // 테두리 스타일 변경
+          $(this).find(".exam-result").css("display", "block"); // 개별 요소에 대해 display 속성 변경
+        });
+        // document.getElementsByClassName("exam-result").style.display = "block";
       });
     });
-
-
-
-
-
-
-
-</script>
+  </script>
 </html>
