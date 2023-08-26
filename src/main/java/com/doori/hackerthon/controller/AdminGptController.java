@@ -25,14 +25,17 @@ public class AdminGptController {
 
     @GetMapping("/exam")
     public String getExam(Model model, @RequestParam Long id) {
-        model.addAttribute("keywordList", adminGptService.getExam(id));
+        model.addAttribute("examList", adminGptService.getExam(id));
+        model.addAttribute("id", id+1);
         return "exam";
     }
+
     @ResponseBody
     @PostMapping("/retest")
     public void saveRetest() {
         adminGptService.saveRetest();
     }
+
     @ResponseBody
     @PostMapping("/tdtest")
     public void saveTdtest() {

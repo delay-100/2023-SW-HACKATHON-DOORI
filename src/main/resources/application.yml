@@ -1,7 +1,7 @@
 spring:
   cloud:
     gcp:
-#      project-id: doori-sw-hackathon-service
+      #      project-id: doori-sw-hackathon-service
       credentials:
         location: classpath:libs/keys/sw-hackathon-doori-ec7dfee581c7.json
       vision:
@@ -47,13 +47,13 @@ chatgpt:
   temperature: 1.0
   top-p: 1.0
   multi:
-      url: https://api.openai.com/v1/chat/completions
-      model: gpt-3.5-turbo
-      max-tokens: 2000
-      temperature: 0.8
-      top-p: 1.0
+    url: https://api.openai.com/v1/chat/completions
+    model: gpt-3.5-turbo
+    max-tokens: 2000
+    temperature: 0.8
+    top-p: 1.0
   image:
-      url: https://api.openai.com/v1/images/generations
+    url: https://api.openai.com/v1/images/generations
 server:
   port: 8002
 
@@ -61,7 +61,7 @@ gcp:
   config:
     file: libs/keys/sw-hackathon-doori-ec7dfee581c7.json
   project:
-       id: sw-hackathon-doori
+    id: sw-hackathon-doori
   bucket:
     id: doori-bucket-01
   dir:

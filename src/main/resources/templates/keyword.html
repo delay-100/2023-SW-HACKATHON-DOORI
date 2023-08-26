@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <!--    <label-->
+    <!--            class="chatbot-btn"-->
+    <!--            th:each="chatbot : ${chatbotList}"-->
+    <!--            th:text="${chatbot}"-->
+    <!--    ></label>-->
+
+    <label>자신이 잘 알지 못하는 키워드에 대해 선택해주세요 </label>
+    <div>
+      <div class="button-list">
+        <button
+          class="keyword-col"
+          th:attr="name=${keyword}"
+          th:each="keyword : ${keywordList}"
+          th:text="${keyword}"
+        ></button>
+      </div>
+
+      <a a th:href="@{/gptTest/exam?id=2}">완료</a>
+    </div>
+    <div>
+      <label>[알지 못하는 것]</label>
+      <div class="dont-know-list"></div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script th:inline="javascript">
+    $(document).ready(function () {
+      var selectedKeywords = []; // 선택된 키워드를 저장하는 배열
+
+      $(".keyword-col").on("click", function () {
+        var keyword = $(this).attr("name");
+
+        // 이미 선택된 키워드인지 확인
+        if (selectedKeywords.includes(keyword)) {
+          // 이미 선택된 경우 배열에서 제거
+          selectedKeywords = selectedKeywords.filter(function (item) {
+            return item !== keyword;
+          });
+        } else {
+          // 선택되지 않은 경우 배열에 추가
+          selectedKeywords.push(keyword);
+        }
+
+        // 선택된 키워드 목록을 업데이트하여 보여줌
+        updateSelectedKeywords();
+      });
+
+      function updateSelectedKeywords() {
+        var dontKnowList = $(".dont-know-list");
+        dontKnowList.empty(); // 기존 목록 비우기
+
+        // 선택된 키워드 배열을 이용하여 목록 업데이트
+        selectedKeywords.forEach(function (keyword) {
+          dontKnowList.append("<div>" + keyword + "</div>");
+        });
+      }
+    });
+  </script>
+</html>
