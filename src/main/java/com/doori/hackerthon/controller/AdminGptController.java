@@ -1,6 +1,5 @@
 package com.doori.hackerthon.controller;
 
-import com.doori.hackerthon.dto.ExamDto;
 import com.doori.hackerthon.service.AdminGptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,7 @@ public class AdminGptController {
     public void saveExam() {
         adminGptService.saveExam();
     }
-@ResponseBody
+
     @GetMapping("/exam")
     public String getExam(Model model, @RequestParam Long id) {
         model.addAttribute("examList", adminGptService.getExam(id));
