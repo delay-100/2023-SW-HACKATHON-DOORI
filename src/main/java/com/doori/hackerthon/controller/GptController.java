@@ -30,40 +30,7 @@ public class GptController {
     private VisionService visionService;
     //chat-gpt 와 간단한 채팅 서비스 소스
 
-    @PostMapping("/exam")
-    public List<String> saveExam() {
-        return chatService.saveExam();
-    }
 
-    @PostMapping("/index")
-    public List<String> saveIntdex() {
-        return chatService.saveIndex();
-    }
-
-    @PostMapping("/keyword")
-    public List<String> saveKeyword() {
-        return chatService.saveKeyword();
-    }
-/*    @GetMapping("/keyword")
-    public List<String> getKeyword() {
-        return chatService.getKeyword();
-    }
-    @GetMapping("/exam")
-    public List<String> getExam() {
-        return chatService.getExam();
-    }
-    @GetMapping("/index")
-    public List<String> getIndex() {
-        return chatService.getIndex();
-    }*/
-    @PostMapping("/summary")
-    public String saveSummary() {
-        return chatService.saveSummary();
-    }
-    @GetMapping("/summary")
-    public String getSummary() {
-        return chatService.getSummary();
-    }
 //    @PostMapping("message")
 //    public MultiChatResponse test(@RequestBody String question) {
 //        return chatService.getChatResponse(question);
