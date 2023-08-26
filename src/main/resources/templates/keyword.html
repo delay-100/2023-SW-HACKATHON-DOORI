@@ -5,30 +5,28 @@
     <title>Title</title>
 </head>
 <body>
-<div class="button-list">
-    <!--    <label-->
-    <!--            class="chatbot-btn"-->
-    <!--            th:each="chatbot : ${chatbotList}"-->
-    <!--            th:text="${chatbot}"-->
-    <!--    ></label>-->
+<!--    <label-->
+<!--            class="chatbot-btn"-->
+<!--            th:each="chatbot : ${chatbotList}"-->
+<!--            th:text="${chatbot}"-->
+<!--    ></label>-->
 
-    <label>자신이 잘 알지 못하는 키워드에 대해 선택해주세요 </label>
-    <div>
-        <div>
-            <button class="keyword-col" name="keyword">키워드</button>
-        </div>
-        <div>
-            <button class="keyword-col" name="keyword1">키워드1</button>
-        </div>
-        <div>
-            <button class="keyword-col" name="keyword2">키워드2</button>
-        </div>
-        <button onclick="submitKeywordButtonOnPress()">완료</button>
+<label>자신이 잘 알지 못하는 키워드에 대해 선택해주세요 </label>
+<div>
+    <div class="button-list">
+        <button
+                class="keyword-col"
+                th:attr="name=${keyword}"
+                th:each="keyword : ${keywordList}"
+                th:text="${keyword}"
+        ></button>
     </div>
-    <div>
-        <label>[알지 못하는 것]</label>
-        <div class="dont-know-list"></div>
-    </div>
+
+    <button onclick="submitKeywordButtonOnPress()">완료</button>
+</div>
+<div>
+    <label>[알지 못하는 것]</label>
+    <div class="dont-know-list"></div>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -64,6 +62,7 @@
         });
       }
     });
+
 
 
 </script>

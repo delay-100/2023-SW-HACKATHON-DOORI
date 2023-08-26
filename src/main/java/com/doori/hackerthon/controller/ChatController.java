@@ -93,6 +93,6 @@ public class ChatController {
     @PostMapping("/index")
     @ResponseBody
     public void getIndex(@RequestBody Chat chat) {
-         gptService.getContentIndex();
+        gptService.getContentIndex();
     }
 }
