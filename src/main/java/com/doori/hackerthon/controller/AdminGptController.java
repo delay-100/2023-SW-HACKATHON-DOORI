@@ -1,6 +1,6 @@
 package com.doori.hackerthon.controller;
 
-import com.doori.hackerthon.dto.ExamDto;
+import com.doori.hackerthon.dto.SummaryDto;
 import com.doori.hackerthon.service.AdminGptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,5 +55,10 @@ public class AdminGptController {
     @PostMapping("/summary")
     public void saveSummary() {
         adminGptService.saveSummary();
+    }
+    @GetMapping("/summary")
+    public String getSummary(Model model) {
+        model.addAttribute("summary", adminGptService.getSummary());
+        return "summary";
     }
 }
