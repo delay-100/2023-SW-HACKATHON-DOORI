@@ -2,24 +2,18 @@ package com.doori.hackerthon.controller;
 
 import com.doori.hackerthon.dto.Chat;
 import com.doori.hackerthon.service.GptService;
-import io.github.flashvayne.chatgpt.dto.ChatRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.python.core.Py;
 import org.python.core.PyFunction;
 import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -52,7 +46,7 @@ public class ChatController {
         String originalStr = pyObject.toString(); // 테스트
         String s = new String(originalStr.getBytes("iso-8859-1"), "utf-8");
         return s;
-        }
+    }
 
     @ResponseBody
     @GetMapping("/pyTest2")
@@ -67,6 +61,7 @@ public class ChatController {
         String s = new String(originalStr.getBytes("iso-8859-1"), "utf-8");
         return s;
     }
+
     // 채팅방 조회
     @PostMapping("/room")
     public String getRoom(Model model) {
