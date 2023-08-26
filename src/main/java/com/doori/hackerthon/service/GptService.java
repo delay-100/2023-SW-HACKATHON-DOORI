@@ -11,6 +11,7 @@ import dev.langchain4j.data.document.splitter.SentenceSplitter;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.huggingface.HuggingFaceEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.retriever.EmbeddingStoreRetriever;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static dev.langchain4j.data.document.FileSystemDocumentLoader.loadDocument;
+import static dev.langchain4j.model.huggingface.HuggingFaceModelName.SENTENCE_TRANSFORMERS_ALL_MINI_LM_L6_V2;
+import static dev.langchain4j.model.huggingface.HuggingFaceModelName.TII_UAE_FALCON_7B_INSTRUCT;
 import static java.time.Duration.ofSeconds;
 import static dev.langchain4j.model.openai.OpenAiModelName.TEXT_EMBEDDING_ADA_002;
 @Service
@@ -69,14 +72,13 @@ public class GptService {
     }
 
     public ChatResponse getChatResponse(Chat prompt) {
-
-
+        String role = "1. You are a kind teacher who extracts important keywords from students' sentences and asks questions. \\n2. If there is something missing about what I said, don't explain and ask about the missing words.\\n 3. If I say something conceptually wrong, please correct me and continue the question. \\n4. If the current concept is correct, ask back-to-back questions related to the current concept. \\n5. If the student answers with the nuance of 'I don't know', please re-question by changing the question to make it easier to understand. \\n6. Repeat the same question up to 4 times.\\n7. Speaks in Korean.";
 //        System.out.println(prompt.length());
 
 //        // ChatGPT 에게 질문을 던집니다.
         MultiChatMessage message1 = new MultiChatMessage();
         message1.setRole("system");
-        message1.setContent(prompt.getRole());
+        message1.setContent(role);
 
         MultiChatMessage message2 = new MultiChatMessage();
         message2.setRole("user");
@@ -115,22 +117,30 @@ public class GptService {
         System.out.println(OPENAI_API_KEY);
         DocumentSplitter splitter = new SentenceSplitter();
         List<TextSegment> segments = splitter.split(document);
-        EmbeddingModel embeddingModel = OpenAiEmbeddingModel.builder()
-                .apiKey(OPENAI_API_KEY)
-                .modelName(TEXT_EMBEDDING_ADA_002)
-                .timeout(ofSeconds(15))
-                .logRequests(true)
-                .logResponses(true)
+//        EmbeddingModel embeddingModel = OpenAiEmbeddingModel.builder()
+//                .apiKey(OPENAI_API_KEY)
+//                .modelName(TEXT_EMBEDDING_ADA_002)
+////                .timeout(ofSeconds(60))
+//                .logRequests(true)
+//                .logResponses(true)
+//                .build();
+//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
+//        List<Embedding> embeddings = embeddingModel.embedAll(segments);
+
+        HuggingFaceEmbeddingModel huggingFaceEmbeddingModel = HuggingFaceEmbeddingModel.builder()
+                .accessToken("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")
+                .modelId(SENTENCE_TRANSFORMERS_ALL_MINI_LM_L6_V2)
+//                .modelId("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+                .timeout(ofSeconds(600))
                 .build();
 
-        List<Embedding> embeddings = embeddingModel.embedAll(segments);
-
+        List<Embedding> embeddings = huggingFaceEmbeddingModel.embedAll(segments);
         // Store embeddings into embedding store for further search / retrieval
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
         embeddingStore.addAll(embeddings, segments);
         ConversationalRetrievalChain chain = ConversationalRetrievalChain.builder()
                 .chatLanguageModel(OpenAiChatModel.withApiKey(OPENAI_API_KEY))
-                .retriever(EmbeddingStoreRetriever.from(embeddingStore, embeddingModel))
+                .retriever(EmbeddingStoreRetriever.from(embeddingStore, huggingFaceEmbeddingModel))
                 // .chatMemory() // you can override default chat memory
                 // .promptTemplate() // you can override default prompt template
                 .build();
