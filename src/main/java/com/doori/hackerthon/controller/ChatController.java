@@ -71,6 +71,7 @@ public class ChatController {
         List<String> chatbotList = Arrays.asList("힌트", "요약 보기", "도움말");
 
         model.addAttribute("chatbotList", chatbotList);
+//        model.addAttribute("userId" );
         return "chat";
     }
 
