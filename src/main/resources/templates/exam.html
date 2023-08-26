@@ -1,23 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>EXAM</title>
-  </head>
-  <body>
-    <p>exam페이지에 값을 넣어주세용~~~</p>
-    <tr>
-      <td th:text="${exam.examId}"></td>
-      <td th:text="${exam.question}"></td>
-      <input type="text" />
-    </tr>
-    <!-- <tr th:each="exam : ${examList}">
-            <td th:text="${exam.examId}"></td>
-            <td th:text="${exam.question}"></td>
-            <Input type="text" />
-        </tr> -->
-  </body>
+</head>
+<body>
+<!--<tr>-->
+<!--    <td th:text="${exam.id}"></td>-->
+<!--    <td th:text="${exam.question}"></td>-->
+<!--    <input type="text"/>-->
+<!--</tr>-->
+<p>문제를 풀어보고 답변해주세요.</p>
+<div style="padding: 10px" th:each="examDto : ${examList}">
+    <div th:text="${examDto.id}"></div>
+    <div th:text="${examDto.question}"></div>
+    <br/>
+    <textarea
+            id="answer-${examDto.id}"
+            placeholder="답을 입력해주세요."
+    ></textarea>
+    <button class="exam-answer-button" data-exam-id="${examDto.id}">
+        정답보기
+    </button>
+    <div
+            class="exam-answer"
+            style="display: none"
+            th:text="'정답: ' + ${examDto.answer}"
+    ></div>
+</div>
+<button class="exam-all-answer-button">전체 정답보기</button>
+<a>시험 더보기</a>
+<a>나만의 노트</a>
+</body>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-  <script th:inline="javascript"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+      $(".exam-answer-button").on("click", function () {
+        var examId = $(this).closest("div").find("div").first().text(); // 문제 ID 가져오기
+        var answerTextarea = $("#answer-" + examId); // 해당 문제의 답변 입력 필드
+        var examAnswerDiv = $(this).closest("div").find(".exam-answer"); // 정답 표시할 <div> 엘리먼트
+
+        // 토글하여 정답 표시/숨기기
+        if (examAnswerDiv.is(":visible")) {
+          examAnswerDiv.hide();
+          answerTextarea.show();
+        } else {
+          examAnswerDiv.show();
+          answerTextarea.hide();
+        }
+      });
+      $(".exam-all-answer-button").on("click", function () {
+        $(".exam-answer").toggle(); // 토글하여 보이기/숨기기
+      });
+    });
+
+</script>
 </html>
