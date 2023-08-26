@@ -25,16 +25,20 @@ public class AdminGptController {
     public void saveExam() {
         adminGptService.saveExam();
     }
-    @ResponseBody
+
+//    @ResponseBody
     @GetMapping("/fistExam")
-    public List<ExamDto> getExam() {
-        return adminGptService.getExam();
+    public String getExam(Model model) {
+        model.addAttribute("keywordList", adminGptService.getExam());
+        return "exam";
     }
 
+    @ResponseBody
     @PostMapping("/keyword")
     public List<String> saveKeyword(Model model) {
         return adminGptService.saveKeyword();
     }
+
     @GetMapping("/keyword")
     public String getKeyword(Model model) {
         model.addAttribute("keywordList", adminGptService.saveKeyword());

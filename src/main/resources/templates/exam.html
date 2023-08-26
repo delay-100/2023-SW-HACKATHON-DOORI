@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8"/>
+  <head>
+    <meta charset="UTF-8" />
     <title>EXAM</title>
-</head>
-<body>
-<p>exam페이지에 값을 넣어주세용~~~</p>
-<!-- <div class="button-list">
-  <button
-    class="chatbot-btn"
-    th:each="chatbot : ${chatbotList}"
-    th:onclick="chatbotButtonOnPress([[${chatbot}]])"
-    th:text="${chatbot}"
-  ></button>
-</div> -->
-</body>
+  </head>
+  <body>
+    <p>exam페이지에 값을 넣어주세용~~~</p>
+    <tr>
+      <td th:text="${exam.examId}"></td>
+      <td th:text="${exam.question}"></td>
+      <input type="text" />
+    </tr>
+    <!-- <tr th:each="exam : ${examList}">
+            <td th:text="${exam.examId}"></td>
+            <td th:text="${exam.question}"></td>
+            <Input type="text" />
+        </tr> -->
+  </body>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script th:inline="javascript"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script th:inline="javascript"></script>
 </html>
